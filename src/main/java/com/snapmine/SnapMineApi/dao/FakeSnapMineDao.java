@@ -15,6 +15,7 @@ public class FakeSnapMineDao
 
 	@Override
 	public int addClient(Client client) {
+		client.setId(DB.size());
 		DB.add(client);
 		return client.getId();
 	}

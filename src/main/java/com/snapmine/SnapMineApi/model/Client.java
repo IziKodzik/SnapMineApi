@@ -1,12 +1,17 @@
 package com.snapmine.SnapMineApi.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Client {
 
 	private int id;
 	private String password;
 	private String name;
 
-	public Client(int id, String password, String name, String email) {
+	public Client(@JsonProperty("id") int id,
+				  @JsonProperty("password") String password,
+				  @JsonProperty("name") String name,
+				  @JsonProperty("email") String email) {
 		this.id = id;
 		this.password = password;
 		this.name = name;

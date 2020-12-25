@@ -18,17 +18,11 @@ public class ClientController {
 	public ClientController(ClientService clientService) {
 		this.clientService = clientService;
 	}
-
-	@CrossOrigin
-	@PostMapping
-	public int addClient(String client){
-		System.out.println(client);
-//		return this.clientService.addClient(client);
-		return 0;
+	@PostMapping("/add")
+	public int addClient(@RequestBody Client client){
+		return this.clientService.addClient(client);
 	}
-
-	@CrossOrigin
-	@GetMapping
+	@GetMapping("/all")
 	public List<Client> selectAllClients(){
 		return this.clientService.selectAllClients();
 	}
