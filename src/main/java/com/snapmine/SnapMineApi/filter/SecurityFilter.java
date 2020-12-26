@@ -17,7 +17,7 @@ public class SecurityFilter
 
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-		System.out.println("filter");
+//		System.out.println("filter");
 		filterChain.doFilter(servletRequest,servletResponse);
 	}
 
