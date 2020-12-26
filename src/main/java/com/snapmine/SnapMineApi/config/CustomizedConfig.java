@@ -1,5 +1,6 @@
 package com.snapmine.SnapMineApi.config;
 
+import com.snapmine.SnapMineApi.middleware.SecuredFilterHandlerInterceptor;
 import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

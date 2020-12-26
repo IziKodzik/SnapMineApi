@@ -16,7 +16,7 @@ public class SecuredFilterHandlerInterceptor
 		if(handler instanceof HandlerMethod){
 			Secured filter = ((HandlerMethod)(handler)).getMethod().getAnnotation(Secured.class);
 			if( filter != null){
-				System.out.println("DZIALA");
+				System.out.println("secured");
 			}
 		}
 		return true;

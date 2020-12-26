@@ -29,7 +29,7 @@ public class ClientController {
 		return this.clientService.selectAllClients();
 	}
 
-	@GetMapping("/")
+	@GetMapping
 	public String client(){
 		return "Hello to clients";
 	}
