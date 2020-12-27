@@ -26,8 +26,8 @@ public class SecuredFilterHandlerInterceptor
 		if(handler instanceof HandlerMethod){
 			Secured filter = ((HandlerMethod)(handler)).getMethod().getAnnotation(Secured.class);
 			if( filter != null){
-				int id = Integer.parseInt(request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1) );
-				System.out.println(id);
+//				int id = Integer.parseInt(request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1) );
+//				System.out.println(id);
 			}
 		}
 		return true;
