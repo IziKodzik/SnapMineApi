@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,8 +26,8 @@ public class SecuredFilterHandlerInterceptor
 		if(handler instanceof HandlerMethod){
 			Secured filter = ((HandlerMethod)(handler)).getMethod().getAnnotation(Secured.class);
 			if( filter != null){
-				System.out.println("secured");
-				this.securityService.authenticate();
+				int id = Integer.parseInt(request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1) );
+				System.out.println(id);
 			}
 		}
 		return true;

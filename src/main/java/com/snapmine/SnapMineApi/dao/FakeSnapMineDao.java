@@ -24,4 +24,9 @@ public class FakeSnapMineDao
 	public List<Client> selectAllClients() {
 		return this.DB;
 	}
+
+	@Override
+	public Client getClient(int id) {
+		return DB.get(id);
+	}
 }

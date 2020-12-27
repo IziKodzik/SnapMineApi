@@ -30,5 +30,10 @@ public class ClientServiceImpl
 	public List<Client> selectAllClients() {
 		return this.db.selectAllClients();
 	}
+
+	@Override
+	public Client getClient(int id) {
+		return null;
+	}
 }
 

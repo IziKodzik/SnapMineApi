@@ -10,4 +10,5 @@ public interface SnapMineDao {
 
 	int addClient(Client client);
 	List<Client> selectAllClients();
+	Client getClient(int id);
 }

@@ -34,4 +34,10 @@ public class ClientController {
 		return "Hello to clients";
 	}
 
+	@Secured
+	@GetMapping("/{id}")
+	public int getClient(@PathVariable("id") int id){
+		return id;
+	}
+
 }
