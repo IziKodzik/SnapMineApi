@@ -16,7 +16,7 @@ public class ClientServiceImpl
 	private SnapMineDao db;
 
 	@Autowired
-	public ClientServiceImpl(@Qualifier("fake") SnapMineDao db) {
+	public ClientServiceImpl(@Qualifier("postgres") SnapMineDao db) {
 		this.db = db;
 	}
 

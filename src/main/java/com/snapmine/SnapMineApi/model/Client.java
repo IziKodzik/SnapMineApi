@@ -7,6 +7,8 @@ public class Client {
 	private int id;
 	private String password;
 	private String name;
+	private	String email;
+
 
 	public Client(@JsonProperty("id") int id,
 				  @JsonProperty("password") String password,
@@ -18,7 +20,11 @@ public class Client {
 		this.email = email;
 	}
 
-	private	String email;
+	public Client(int id, String password, String name) {
+		this.id = id;
+		this.password = password;
+		this.name = name;
+	}
 
 	public int getId() {
 		return id;
