@@ -1,7 +1,0 @@
-app:
-  datasource:
-    jdbc-url: jdbc:postgresql://localhost:5432/snapminedb
-    username: postgres
-    password: jdorka
-    pool-size: 12
-

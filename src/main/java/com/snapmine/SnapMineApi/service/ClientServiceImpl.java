@@ -1,7 +1,7 @@
 package com.snapmine.SnapMineApi.service;
 
 
-import com.snapmine.SnapMineApi.dao.SnapMineDao;
+import com.snapmine.SnapMineApi.dao.ClientDao;
 import com.snapmine.SnapMineApi.model.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,10 +13,10 @@ import java.util.List;
 public class ClientServiceImpl
 	implements ClientService{
 
-	private SnapMineDao db;
+	private ClientDao db;
 
 	@Autowired
-	public ClientServiceImpl(@Qualifier("postgres") SnapMineDao db) {
+	public ClientServiceImpl(@Qualifier("postgres") ClientDao db) {
 		this.db = db;
 	}
 

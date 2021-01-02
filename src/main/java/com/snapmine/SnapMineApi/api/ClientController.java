@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.List;
 @RestController
 public class ClientController {
 
-	private ClientService clientService;
+	private final ClientService clientService;
 
 	@Autowired
 	public ClientController(ClientService clientService) {

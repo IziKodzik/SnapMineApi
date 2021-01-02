@@ -2,6 +2,8 @@ package com.snapmine.SnapMineApi.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 public class Client {
 
 	private int id;
@@ -20,7 +22,7 @@ public class Client {
 		this.email = email;
 	}
 
-	public Client(int id, String password, String name) {
+	public Client(int id, String name, String password) {
 		this.id = id;
 		this.password = password;
 		this.name = name;
