@@ -45,13 +45,7 @@ public class ClientController {
 
 	@GetMapping("/test")
 	public int test(){
-		try {
-			Connection con = DriverManager.getConnection("jdbc:derby:C:\\Programy\\Derby\\derby\\bin\\mydb");
-			System.out.println("XD");
-			con.clearWarnings();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		this.clientService.addClient(new Client());
 		return 1;
 	}
 

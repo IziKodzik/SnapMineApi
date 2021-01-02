@@ -33,26 +33,60 @@ public class ClientDataAccessService
 
     @Override
     public int addClient(Client client) {
-        return 0;
+
+        try {
+            ResultSet r = ((resQuery("SELECT MAX(id) as id FROM client")));
+            r.next();
+            int id = (r.getInt("id"));
+            client.setId(id + 1);
+
+            voidQuery(String.format(
+                    "INSERT INTO client VALUES (%d,'%s','%s','%s')",
+                    client.getId(),client.getName(),client.getPassword(),
+                    client.getEmail())
+            );
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return client.getId();
     }
 
     @Override
     public List<Client> selectAllClients() {
-        System.out.println(this.connectionString);
-        List<Client> clients = new ArrayList<>();
-        try(Connection con = DriverManager.getConnection(this.connectionString,user,password)){
+        ResultSet r= this.resQuery("SELECT * FROM client");
+        List<Client> result = new ArrayList<>();
+        try {
+            for (; r!= null && r.next(); )
+                result.add(new Client(r.getInt("id"),r.getString("name"),r.getString("password")));
 
-            Statement statement = con.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM client");
-            for(;result.next();) {
-                clients.add(new Client(result.getInt("id"),
-                        result.getString("name"),
-                        result.getString("password")));
-            }
+            return result;
         }catch (SQLException e){
             e.printStackTrace();
         }
-        return clients;
+        return result;
+    }
+
+    private ResultSet resQuery(String q){
+        try(Connection con = DriverManager.getConnection(this.connectionString,user,password)){
+            Statement statement = con.createStatement();
+            return statement.executeQuery(q);
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private int voidQuery(String q){
+        try(Connection con = DriverManager.getConnection(this.connectionString,user,password)){
+            Statement statement = con.createStatement();
+            statement.execute(q);
+            return 1;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override

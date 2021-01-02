@@ -28,6 +28,10 @@ public class Client {
 		this.name = name;
 	}
 
+	public Client() {
+
+	}
+
 	public int getId() {
 		return id;
 	}
