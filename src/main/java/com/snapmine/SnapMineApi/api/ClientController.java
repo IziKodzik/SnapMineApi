@@ -3,8 +3,10 @@ package com.snapmine.SnapMineApi.api;
 
 import com.snapmine.SnapMineApi.annotation.Secured;
 import com.snapmine.SnapMineApi.model.Client;
+import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import com.snapmine.SnapMineApi.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Connection;
@@ -23,30 +25,32 @@ public class ClientController {
 		this.clientService = clientService;
 	}
 	@PostMapping("/add")
-	public int addClient(@RequestBody Client client){
-		return this.clientService.addClient(client);
+	public ResponseEntity<?> addClient(@RequestBody Client client){
+		return this.clientService.addClient(client) >= 0 ?
+				ResponseEntity.badRequest().body("XD") : ResponseEntity.badRequest().body("XDD");
 	}
 	@Secured
 	@GetMapping("/all")
-	public List<Client> selectAllClients(){
-		return this.clientService.selectAllClients();
+	public ResponseEntity<?> selectAllClients(){
+		return ResponseEntity.ok(this.clientService.selectAllClients());
 	}
 
 	@GetMapping
-	public String client(){
-		return "Hello to clients";
+	public ResponseEntity<?> client(){
+		return ResponseEntity.ok( "Hello to clients");
 	}
 
 	@Secured
 	@GetMapping("/{id}")
-	public int getClient(@PathVariable("id") int id){
-		return id;
+	public ResponseEntity<?> getClient(@PathVariable("id") int id){
+		return ResponseEntity.ok(id);
 	}
 
-	@GetMapping("/test")
-	public int test(){
-		this.clientService.addClient(new Client());
-		return 1;
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
+		System.out.println(loginRequest.getLogin());
+		return ResponseEntity.badRequest()
+				.body("Ty kurwa cpunie jebany");
 	}
 
 

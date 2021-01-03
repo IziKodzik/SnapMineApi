@@ -35,9 +35,13 @@ public class ClientDataAccessService
     public int addClient(Client client) {
 
         try {
-            ResultSet r = ((resQuery("SELECT MAX(id) as id FROM client")));
-            r.next();
-            int id = (r.getInt("id"));
+            Optional<ResultSet> maybeResult =
+                    Optional.ofNullable((resQuery("SELECT MAX(id) as id FROM client")));
+            if(!maybeResult.isPresent())
+                return -1;
+            ResultSet resultSet = maybeResult.get();
+            resultSet.next();
+            int id = (resultSet.getInt("id"));
             client.setId(id + 1);
 
             voidQuery(String.format(
@@ -46,8 +50,8 @@ public class ClientDataAccessService
                     client.getEmail())
             );
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return client.getId();
@@ -55,11 +59,14 @@ public class ClientDataAccessService
 
     @Override
     public List<Client> selectAllClients() {
-        ResultSet r= this.resQuery("SELECT * FROM client");
+        Optional<ResultSet> maybeResult =  Optional.ofNullable(this.resQuery("SELECT * FROM client"));
         List<Client> result = new ArrayList<>();
+        if(!maybeResult.isPresent())
+            return result;
+        ResultSet resultSet = maybeResult.get();
         try {
-            for (; r!= null && r.next(); )
-                result.add(new Client(r.getInt("id"),r.getString("name"),r.getString("password")));
+            while ( resultSet.next() )
+                result.add(new Client(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getString("password")));
 
             return result;
         }catch (SQLException e){
@@ -77,7 +84,6 @@ public class ClientDataAccessService
             return null;
         }
     }
-
     private int voidQuery(String q){
         try(Connection con = DriverManager.getConnection(this.connectionString,user,password)){
             Statement statement = con.createStatement();
