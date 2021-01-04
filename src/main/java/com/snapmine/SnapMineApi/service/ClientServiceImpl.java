@@ -35,5 +35,10 @@ public class ClientServiceImpl
 	public Client getClient(int id) {
 		return null;
 	}
+
+	@Override
+	public int reset() {
+		return this.db.reset();
+	}
 }
 

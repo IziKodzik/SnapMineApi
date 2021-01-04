@@ -5,6 +5,7 @@ import com.snapmine.SnapMineApi.annotation.Secured;
 import com.snapmine.SnapMineApi.model.Client;
 import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import com.snapmine.SnapMineApi.service.ClientService;
+import com.snapmine.SnapMineApi.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +21,20 @@ public class ClientController {
 
 	private final ClientService clientService;
 
+
+	private final SecurityService securityService;
+
 	@Autowired
-	public ClientController(ClientService clientService) {
+	public ClientController(ClientService clientService
+							,SecurityService securityService) {
 		this.clientService = clientService;
+		this.securityService = securityService;
 	}
+
 	@PostMapping("/add")
 	public ResponseEntity<?> addClient(@RequestBody Client client){
 		return this.clientService.addClient(client) >= 0 ?
-				ResponseEntity.badRequest().body("XD") : ResponseEntity.badRequest().body("XDD");
+				ResponseEntity.ok().body("Account created.") : ResponseEntity.badRequest().body("nah :(");
 	}
 	@Secured
 	@GetMapping("/all")
@@ -48,10 +55,17 @@ public class ClientController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
-		System.out.println(loginRequest.getLogin());
-		return ResponseEntity.badRequest()
-				.body("Ty kurwa cpunie jebany");
+		Client client = this.securityService.login(loginRequest);
+		return  client != null ? ResponseEntity.ok(client) :
+				ResponseEntity.badRequest()
+						.body("Login or password incorrect.");
 	}
+	@Secured
+	@GetMapping("/reset")
+	public int reset(){
+		return this.clientService.reset();
+	}
+
 
 
 }

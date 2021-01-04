@@ -1,6 +1,7 @@
 package com.snapmine.SnapMineApi.dao;
 
 import com.snapmine.SnapMineApi.model.Client;
+import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+
+import static java.util.Optional.ofNullable;
 
 @Repository("postgres")
 public class ClientDataAccessService
@@ -31,12 +34,34 @@ public class ClientDataAccessService
         this.user = factor.apply("user");
     }
 
+    public Client login(LoginRequest request){
+        Optional<ResultSet> maybeResult = Optional.ofNullable(this.resQuery(String.format("SELECT * FROM client WHERE name=%s AND password =%s",
+                request.getLogin(),request.getPassword())));
+        if(!maybeResult.isPresent())
+            return null;
+        ResultSet resultSet = maybeResult.get();
+        List<Client> clients = new ArrayList<>();
+        try {
+            while (resultSet.next())
+                clients.add(new Client(resultSet.getInt("id")
+                        ,resultSet.getString("name")
+                        ,resultSet.getString("password")
+                        ,resultSet.getString("email")));
+            if(clients.size() == 1)
+                return clients.get(0);
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+
     @Override
     public int addClient(Client client) {
 
         try {
             Optional<ResultSet> maybeResult =
-                    Optional.ofNullable((resQuery("SELECT MAX(id) as id FROM client")));
+                    ofNullable((resQuery("SELECT MAX(id) as id FROM client")));
             if(!maybeResult.isPresent())
                 return -1;
             ResultSet resultSet = maybeResult.get();
@@ -44,7 +69,7 @@ public class ClientDataAccessService
             int id = (resultSet.getInt("id"));
             client.setId(id + 1);
 
-            voidQuery(String.format(
+            id = voidQuery(String.format(
                     "INSERT INTO client VALUES (%d,'%s','%s','%s')",
                     client.getId(),client.getName(),client.getPassword(),
                     client.getEmail())
@@ -52,6 +77,7 @@ public class ClientDataAccessService
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return -1;
         }
 
         return client.getId();
@@ -59,7 +85,7 @@ public class ClientDataAccessService
 
     @Override
     public List<Client> selectAllClients() {
-        Optional<ResultSet> maybeResult =  Optional.ofNullable(this.resQuery("SELECT * FROM client"));
+        Optional<ResultSet> maybeResult =  ofNullable(this.resQuery("SELECT * FROM client"));
         List<Client> result = new ArrayList<>();
         if(!maybeResult.isPresent())
             return result;
@@ -98,5 +124,10 @@ public class ClientDataAccessService
     @Override
     public Optional<Client> getClient(int id) {
         return null;
+    }
+
+    @Override
+    public int reset() {
+        return this.voidQuery("DELETE FROM client WHERE 1=1;");
     }
 }

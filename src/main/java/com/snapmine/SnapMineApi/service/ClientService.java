@@ -9,5 +9,6 @@ public interface ClientService {
 	 int addClient(Client client);
 	 List<Client> selectAllClients();
 	 Client getClient(int id);
+	 int reset();
 
 }

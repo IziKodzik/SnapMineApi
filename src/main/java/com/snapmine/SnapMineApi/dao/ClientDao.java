@@ -13,4 +13,5 @@ public interface ClientDao {
 	int addClient(Client client);
 	List<Client> selectAllClients();
 	Optional<Client> getClient(int id);
+	int reset();
 }
