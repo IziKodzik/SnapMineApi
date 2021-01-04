@@ -4,22 +4,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LoginRequest {
 
-    private String login,password;
+    private String name,password;
 
     public LoginRequest(){
 
     }
-    public LoginRequest(@JsonProperty String login, @JsonProperty String password) {
-        this.login = login;
+    public LoginRequest(@JsonProperty String name, @JsonProperty String password) {
+        this.name = name;
         this.password = password;
     }
 
-    public String getLogin() {
-        return login;
+    public String getName() {
+        return name;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {

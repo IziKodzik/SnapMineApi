@@ -6,9 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import javax.xml.transform.Result;
-import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +32,11 @@ public class ClientDataAccessService
     }
 
     public Client login(LoginRequest request){
-        Optional<ResultSet> maybeResult = Optional.ofNullable(this.resQuery(String.format("SELECT * FROM client WHERE name=%s AND password =%s",
-                request.getLogin(),request.getPassword())));
+        Optional<ResultSet> maybeResult =
+                Optional.ofNullable(
+                        this.resQuery(String.format(
+                                "SELECT * FROM client WHERE name='%s' AND password ='%s'",
+                request.getName(),request.getPassword())));
         if(!maybeResult.isPresent())
             return null;
         ResultSet resultSet = maybeResult.get();
@@ -51,7 +51,7 @@ public class ClientDataAccessService
                 return clients.get(0);
         }catch (SQLException e){
             e.printStackTrace();
-            return null;
+            return new Client(-1,"","");
         }
         return null;
     }
@@ -92,7 +92,9 @@ public class ClientDataAccessService
         ResultSet resultSet = maybeResult.get();
         try {
             while ( resultSet.next() )
-                result.add(new Client(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getString("password")));
+                result.add(new Client(resultSet.getInt("id")
+                        , resultSet.getString("name")
+                        ,resultSet.getString("password")));
 
             return result;
         }catch (SQLException e){
