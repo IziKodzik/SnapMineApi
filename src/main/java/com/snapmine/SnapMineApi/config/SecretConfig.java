@@ -17,12 +17,12 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Configuration
-public class BeanConfig {
+public class SecretConfig {
 
     private Map<String,String> secret;
 
     @Autowired
-    public BeanConfig(ApplicationArguments args) {
+    public SecretConfig(ApplicationArguments args) {
 
         String path = args.getSourceArgs()[0];
         StringBuilder sb = new StringBuilder("");
@@ -39,7 +39,7 @@ public class BeanConfig {
     }
 
     @Bean
-    public Function<String,String> factor(){
+    public Function<String,String> secret(){
         return name->secret.get(name);
     }
 

@@ -24,7 +24,7 @@ public class ClientDataAccessService
     private final Function<String,String> factor;
 
     @Autowired
-    public ClientDataAccessService(@Qualifier("factor") Function<String,String> factor) {
+    public ClientDataAccessService(@Qualifier("secret") Function<String,String> factor) {
         this.factor = factor;
         this.connectionString = factor.apply("url");;
         this.password = factor.apply("password");
