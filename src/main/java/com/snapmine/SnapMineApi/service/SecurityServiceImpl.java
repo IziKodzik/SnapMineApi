@@ -30,9 +30,7 @@ public class SecurityServiceImpl
 
 	public String test(String text){
 		String s = aesCryptor.encrypt(text,key);
-		System.out.println(s + " endcrypt");
-		s = aesCryptor.decrypt(s,key);
-		System.out.println(s);
+		aesCryptor.decrypt(s,key);
 		return "DOne";
 
 	}
