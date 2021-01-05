@@ -15,11 +15,9 @@ public class SessionToken {
         this.token = token;
     }
     public SessionToken(Role... roles){
-        System.out.println(Arrays.toString(roles));
         List<Role> toShuffle = Arrays.asList(roles);
         Collections.shuffle(toShuffle);
         toShuffle.toArray(roles);
-        System.out.println(Arrays.toString(roles));
     }
     public String getToken() {
         return token;
