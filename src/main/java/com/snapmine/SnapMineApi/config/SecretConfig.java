@@ -19,7 +19,7 @@ import java.util.function.Function;
 @Configuration
 public class SecretConfig {
 
-    private Map<String,String> secret;
+    private final Map<String,String> secret;
 
     @Autowired
     public SecretConfig(ApplicationArguments args) {

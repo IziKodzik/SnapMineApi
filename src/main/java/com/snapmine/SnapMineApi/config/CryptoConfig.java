@@ -1,22 +1,19 @@
 package com.snapmine.SnapMineApi.config;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.snapmine.SnapMineApi.cryptor.AESCryptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.function.Function;
 
 @Configuration
 public class CryptoConfig {
 
-    @Bean
-    public Function<String,String> encrypt(){
-        return this::encryptD;
+    AESCryptor aesCryptor = new AESCryptor();
+
+    @Bean("aesCryptor")
+    public AESCryptor getAESCryptor(){
+        return this.aesCryptor;
     }
 
-    private String encryptD(String string){
-        return string.toUpperCase();
-    }
 
 }
