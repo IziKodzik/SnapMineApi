@@ -7,5 +7,6 @@ public interface SecurityService {
 
 	int authenticate();
 	Client login(LoginRequest request);
+	String test(String text);
 
 }

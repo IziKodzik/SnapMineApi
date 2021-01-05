@@ -15,12 +15,9 @@ public class ClientServiceImpl
 	implements ClientService{
 
 	private ClientDao db;
-	private AESCryptor aesCryptor;
 	@Autowired
-	public ClientServiceImpl(@Qualifier("postgres") ClientDao db,
-							 AESCryptor aesCryptor) {
+	public ClientServiceImpl(@Qualifier("postgres") ClientDao db) {
 		this.db = db;
-		this.aesCryptor = aesCryptor;
 	}
 
 
