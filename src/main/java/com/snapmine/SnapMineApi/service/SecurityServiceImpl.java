@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.util.function.Function;
 
 @Service
@@ -17,21 +18,22 @@ public class SecurityServiceImpl
 
 	private final ClientDataAccessService DB;
 	private AESCryptor aesCryptor;
-	private final String key;
 
 	@Autowired
 	public SecurityServiceImpl(@Qualifier("postgres") ClientDataAccessService db,
 							   AESCryptor aesCryptor, Function<String,String> secret) {
 		DB = db;
 		this.aesCryptor = aesCryptor;
-		this.key = (secret.apply("tokenHash"));
+		this.aesCryptor.setKey((secret.apply("tokenHash")));
 	}
 
 
 	public String test(String text){
-		String s = aesCryptor.encrypt(text,key);
-		aesCryptor.decrypt(s,key);
-		return "DOne";
+		byte[] en = this.aesCryptor.encrypt(text.getBytes(StandardCharsets.UTF_8));
+		System.out.println(new String(en));
+		byte[] de = this.aesCryptor.decrypt(en);
+		System.out.println(new String(de));
+		return new String(de);
 
 	}
 
