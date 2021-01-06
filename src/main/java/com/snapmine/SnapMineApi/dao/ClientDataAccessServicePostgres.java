@@ -1,6 +1,7 @@
 package com.snapmine.SnapMineApi.dao;
 
 import com.snapmine.SnapMineApi.model.Client;
+import com.snapmine.SnapMineApi.model.SQLMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -33,13 +34,18 @@ public class ClientDataAccessServicePostgres
 
     @Override
     public int addClient(Client client) {
+        int id = this.query("SELECT MAX(id) as id FROM client;",set->set.getInt("id")).get(0);
+        ++id;
+        String query = String.format("INSERT INTO client VALUES(%d,'%s','%s','%s');",
+                id,client.getName(),client.getPassword(),client.getEmail());
+        System.out.println(this.query(query,null));
         return 0;
     }
 
     @Override
     public List<Client> selectAllClients() {
 
-        this.query("SELECT * FROM client",);
+        System.out.println(this.query("SELECT * FROM client", Client.getMapper()));
         return null;
     }
 
@@ -53,27 +59,27 @@ public class ClientDataAccessServicePostgres
         return 0;
     }
 
-    private <T> Optional<List<T>> query(String query,Function<ResultSet,T> mapper){
+    private <T> List<T> query(String query, SQLMapper<T> mapper){
 
         List<T> result = new ArrayList<>();
         try(Connection connection =
                     DriverManager.getConnection(this.connectionString,
                             this.user,this.password)){
 
-            Statement statement = connection.createStatement();
-            ResultSet set = statement.executeQuery("SELECT * FROM client");
-            while (set.next())
-                result.add( mapper.apply(set));
+            try(Statement statement = connection.createStatement()) {
+                if (mapper == null) {
+                    statement.executeUpdate(query);
+                    return result;
+                }
+                ResultSet set = statement.executeQuery(query);
+                while (set.next())
+                    result.add(mapper.map(set));
+            }
 
-        }catch (SQLException e){
-            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-        return Optional.of(result);
+        return (result);
     }
-
-
-
-
-
 
 }

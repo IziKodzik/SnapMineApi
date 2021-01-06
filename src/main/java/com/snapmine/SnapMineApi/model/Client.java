@@ -5,9 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.function.Function;
 
-public class Client {
+public class Client{
 
 	private int id;
 	private String password;
@@ -75,6 +76,13 @@ public class Client {
 				", name='" + name + '\'' +
 				", email='" + email + '\'' +
 				'}';
+	}
+
+	public static SQLMapper<Client> getMapper(){
+		return resultSet ->
+			new Client(resultSet.getInt("id"), resultSet.getString("name"),
+					resultSet.getString("password"), resultSet.getString("email"));
+
 	}
 
 }
