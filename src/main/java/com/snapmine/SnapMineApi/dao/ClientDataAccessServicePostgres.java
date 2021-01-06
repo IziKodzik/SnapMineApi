@@ -3,13 +3,17 @@ package com.snapmine.SnapMineApi.dao;
 import com.snapmine.SnapMineApi.model.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
-@Service
+@Repository("upgrade")
 public class ClientDataAccessServicePostgres
     implements ClientDao{
 
@@ -34,6 +38,8 @@ public class ClientDataAccessServicePostgres
 
     @Override
     public List<Client> selectAllClients() {
+
+        this.query("SELECT * FROM client",);
         return null;
     }
 
@@ -46,6 +52,27 @@ public class ClientDataAccessServicePostgres
     public int reset() {
         return 0;
     }
+
+    private <T> Optional<List<T>> query(String query,Function<ResultSet,T> mapper){
+
+        List<T> result = new ArrayList<>();
+        try(Connection connection =
+                    DriverManager.getConnection(this.connectionString,
+                            this.user,this.password)){
+
+            Statement statement = connection.createStatement();
+            ResultSet set = statement.executeQuery("SELECT * FROM client");
+            while (set.next())
+                result.add( mapper.apply(set));
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return Optional.of(result);
+    }
+
+
+
 
 
 

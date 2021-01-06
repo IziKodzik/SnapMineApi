@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.sql.ResultSet;
+import java.util.function.Function;
+
 public class Client {
 
 	private int id;
@@ -73,4 +76,5 @@ public class Client {
 				", email='" + email + '\'' +
 				'}';
 	}
+
 }

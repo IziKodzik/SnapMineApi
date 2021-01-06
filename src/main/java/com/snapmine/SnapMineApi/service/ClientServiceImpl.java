@@ -16,7 +16,7 @@ public class ClientServiceImpl
 
 	private ClientDao db;
 	@Autowired
-	public ClientServiceImpl(@Qualifier("postgres") ClientDao db) {
+	public ClientServiceImpl(@Qualifier("upgrade") ClientDao db) {
 		this.db = db;
 	}
 
