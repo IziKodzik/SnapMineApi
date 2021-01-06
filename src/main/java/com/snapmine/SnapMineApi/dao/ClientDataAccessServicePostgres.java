@@ -35,18 +35,15 @@ public class ClientDataAccessServicePostgres
     @Override
     public int addClient(Client client) {
         int id = this.query("SELECT MAX(id) as id FROM client;",set->set.getInt("id")).get(0);
-        ++id;
         String query = String.format("INSERT INTO client VALUES(%d,'%s','%s','%s');",
-                id,client.getName(),client.getPassword(),client.getEmail());
-        System.out.println(this.query(query,null));
+                (id+1),client.getName(),client.getPassword(),client.getEmail());
+        this.query(query,null);
         return 0;
     }
 
     @Override
     public List<Client> selectAllClients() {
-
-        System.out.println(this.query("SELECT * FROM client", Client.getMapper()));
-        return null;
+        return this.query("SELECT * FROM client",Client.getMapper());
     }
 
     @Override
@@ -56,11 +53,11 @@ public class ClientDataAccessServicePostgres
 
     @Override
     public int reset() {
+        this.query("DELETE FROM client WHERE 1=1;",null);
         return 0;
     }
 
     private <T> List<T> query(String query, SQLMapper<T> mapper){
-
         List<T> result = new ArrayList<>();
         try(Connection connection =
                     DriverManager.getConnection(this.connectionString,
