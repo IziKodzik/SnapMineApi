@@ -55,8 +55,8 @@ public class SecurityServiceImpl
 		Optional<List<Role>> maybeRoles = this.DB.getRolesById(2);
 		List<Role> roleList = maybeRoles.orElse(new ArrayList<>());
 		SessionToken token = new SessionToken(roleList);
-		token.setToken(new String(this.aesCryptor.encrypt(token.getToken().getBytes())));
-		System.out.println(token);
+		String test = new String(aesCryptor.encrypt(token.getToken().getBytes(StandardCharsets.UTF_8)));
+		System.out.println(new String(aesCryptor.decrypt(test.getBytes(StandardCharsets.UTF_8))));
 		return Optional.of("XD");
 
 	}
