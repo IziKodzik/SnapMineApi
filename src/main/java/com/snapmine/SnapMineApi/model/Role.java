@@ -6,7 +6,7 @@ public class Role {
     private String name,
                     value;
 
-    public Role(int id, String name, String value) {
+    private Role(int id, String name, String value) {
         this.id = id;
         this.name = name;
         this.value = value;
@@ -34,6 +34,10 @@ public class Role {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public static SQLMapper<Role> getMapper(){
+        return set -> new Role(set.getInt("id"),set.getString("name"),set.getString("value"));
     }
 
     @Override

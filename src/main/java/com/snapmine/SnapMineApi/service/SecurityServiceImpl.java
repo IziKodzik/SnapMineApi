@@ -4,12 +4,15 @@ import com.snapmine.SnapMineApi.cryptor.AESCryptor;
 import com.snapmine.SnapMineApi.dao.ClientDao;
 import com.snapmine.SnapMineApi.dao.ClientDataAccessServicePostgres;
 import com.snapmine.SnapMineApi.model.Client;
+import com.snapmine.SnapMineApi.model.Role;
+import com.snapmine.SnapMineApi.model.SessionToken;
 import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -45,9 +48,11 @@ public class SecurityServiceImpl
 	}
 
 	@Override
-	public int authenticate() {
-		System.out.println("auth");
-		return 200;
+	public Optional<String> authenticate() {
+		SessionToken token = new SessionToken();
+
+		return Optional.of("XD");
+
 	}
 
 

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface SecurityService {
 
-	int authenticate();
+	Optional<String> authenticate();
 	Optional<Client> login(LoginRequest request);
 	String test(String text);
 

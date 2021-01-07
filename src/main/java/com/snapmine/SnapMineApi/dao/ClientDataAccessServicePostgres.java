@@ -1,6 +1,7 @@
 package com.snapmine.SnapMineApi.dao;
 
 import com.snapmine.SnapMineApi.model.Client;
+import com.snapmine.SnapMineApi.model.Role;
 import com.snapmine.SnapMineApi.model.SQLMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,6 +40,16 @@ public class ClientDataAccessServicePostgres
                 (id+1),client.getName(),client.getPassword(),client.getEmail());
         this.query(query,null);
         return 0;
+    }
+
+
+    public Optional<List<Role>> getRolesById(int id){
+        String query =(String.format("SELECT * FROM role INNER JOIN clientRole ON roleID=id WHERE clientID = %d",
+                id));
+        return Optional.ofNullable(this.query(query,Role.getMapper()));
+    }
+    public Optional<List<Role>> getRolesByClient(Client client){
+        return this.getRolesById(client.getId());
     }
 
     @Override
