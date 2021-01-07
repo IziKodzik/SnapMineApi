@@ -39,7 +39,7 @@ public class SecretConfig {
     }
 
     @Bean
-    public Function<String,String> secret(){
+    public Function<String,String> secretProvider(){
         return name->secret.get(name);
     }
 

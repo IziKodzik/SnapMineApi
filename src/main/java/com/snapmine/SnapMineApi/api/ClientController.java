@@ -55,7 +55,7 @@ public class ClientController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
-		Client client = this.securityService.login(loginRequest);
+		Client client = this.securityService.login(loginRequest).orElse(null);
 		return  client != null ? ResponseEntity.ok(client) :
 				ResponseEntity.badRequest()
 						.body("Login or password incorrect.");

@@ -3,12 +3,13 @@ package com.snapmine.SnapMineApi.service;
 
 import com.snapmine.SnapMineApi.dao.ClientDao;
 import com.snapmine.SnapMineApi.model.Client;
-import com.snapmine.SnapMineApi.cryptor.AESCryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientServiceImpl
@@ -27,12 +28,12 @@ public class ClientServiceImpl
 	}
 
 	@Override
-	public List<Client> selectAllClients() {
+	public Optional<List<Client>> selectAllClients() {
 		return this.db.selectAllClients();
 	}
 
 	@Override
-	public Client getClient(int id) {
+	public Optional<Client> getClient(int id) {
 		return null;
 	}
 

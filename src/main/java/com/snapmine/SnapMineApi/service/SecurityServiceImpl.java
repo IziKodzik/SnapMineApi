@@ -1,7 +1,8 @@
 package com.snapmine.SnapMineApi.service;
 
 import com.snapmine.SnapMineApi.cryptor.AESCryptor;
-import com.snapmine.SnapMineApi.dao.ClientDataAccessService;
+import com.snapmine.SnapMineApi.dao.ClientDao;
+import com.snapmine.SnapMineApi.dao.ClientDataAccessServicePostgres;
 import com.snapmine.SnapMineApi.model.Client;
 import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Service
@@ -16,11 +18,11 @@ public class SecurityServiceImpl
 	implements SecurityService{
 
 
-	private final ClientDataAccessService DB;
+	private final ClientDao DB;
 	private AESCryptor aesCryptor;
 
 	@Autowired
-	public SecurityServiceImpl(@Qualifier("postgres") ClientDataAccessService db,
+	public SecurityServiceImpl(ClientDataAccessServicePostgres db,
 							   AESCryptor aesCryptor, Function<String,String> secret) {
 		DB = db;
 		this.aesCryptor = aesCryptor;
@@ -38,8 +40,8 @@ public class SecurityServiceImpl
 	}
 
 	@Override
-	public Client login(LoginRequest request) {
-		return this.DB.login(request);
+	public Optional<Client> login(LoginRequest request) {
+		return null;
 	}
 
 	@Override

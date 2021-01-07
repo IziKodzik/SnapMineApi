@@ -5,13 +5,11 @@ import com.snapmine.SnapMineApi.model.SQLMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 @Repository("upgrade")
@@ -25,16 +23,18 @@ public class ClientDataAccessServicePostgres
 
     @Autowired
     public ClientDataAccessServicePostgres
-            (@Qualifier("secret") Function<String,String> secret) {
-        this.secret = secret;
-        this.connectionString = secret.apply("url");;
-        this.password = secret.apply("password");
-        this.user = secret.apply("user");
+            (@Qualifier("secretProvider") Function<String,String> secretProvider) {
+        this.secret = secretProvider;
+        this.connectionString = secretProvider.apply("url");;
+        this.password = secretProvider.apply("password");
+        this.user = secretProvider.apply("user");
     }
 
     @Override
     public int addClient(Client client) {
-        int id = this.query("SELECT MAX(id) as id FROM client;",set->set.getInt("id")).get(0);
+        int id = this.query("SELECT MAX(id) as id FROM client;",
+                set->set.getInt("id")).get(0);
+
         String query = String.format("INSERT INTO client VALUES(%d,'%s','%s','%s');",
                 (id+1),client.getName(),client.getPassword(),client.getEmail());
         this.query(query,null);
@@ -42,8 +42,8 @@ public class ClientDataAccessServicePostgres
     }
 
     @Override
-    public List<Client> selectAllClients() {
-        return this.query("SELECT * FROM client",Client.getMapper());
+    public Optional<List<Client>> selectAllClients() {
+        return Optional.ofNullable(this.query("SELECT * FROM client", Client.getMapper()));
     }
 
     @Override
@@ -75,6 +75,7 @@ public class ClientDataAccessServicePostgres
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            return null;
         }
         return (result);
     }
