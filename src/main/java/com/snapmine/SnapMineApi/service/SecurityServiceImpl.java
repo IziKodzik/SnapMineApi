@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -49,8 +51,12 @@ public class SecurityServiceImpl
 
 	@Override
 	public Optional<String> authenticate() {
-		SessionToken token = new SessionToken();
 
+		Optional<List<Role>> maybeRoles = this.DB.getRolesById(2);
+		List<Role> roleList = maybeRoles.orElse(new ArrayList<>());
+		SessionToken token = new SessionToken(roleList);
+		token.setToken(new String(this.aesCryptor.encrypt(token.getToken().getBytes())));
+		System.out.println(token);
 		return Optional.of("XD");
 
 	}

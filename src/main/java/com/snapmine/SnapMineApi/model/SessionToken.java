@@ -16,14 +16,17 @@ public class SessionToken {
     public SessionToken(String token) {
         this.token = token;
     }
-    public SessionToken(Role... roles){
+    public SessionToken(List<Role> roles){
+
         StringBuilder token = new StringBuilder();
-        System.out.println(UUID.randomUUID().toString().replace("-","").length());
-        List<Role> toShuffle = Arrays.asList(roles);
-        Collections.shuffle(toShuffle);
-        toShuffle.toArray(roles);
-        token.append(UUID.randomUUID().toString().replace("-",""));
-        Arrays.stream(roles).forEach(r -> token.append(r.toString()));
+        String id = UUID.randomUUID().toString().replace("-","");
+        token.append(id);
+        Collections.shuffle(roles);
+        roles.forEach(r->token.append(r.toString()));
+        this.token = token.toString();
+    }
+    public SessionToken(Role... roles){
+        this(Arrays.asList(roles));
     }
 
     public String getId(){
@@ -35,5 +38,12 @@ public class SessionToken {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    @Override
+    public String toString() {
+        return "SessionToken{" +
+                "token='" + token + '\'' +
+                '}';
     }
 }
