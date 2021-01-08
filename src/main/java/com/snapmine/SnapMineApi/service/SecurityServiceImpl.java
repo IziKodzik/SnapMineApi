@@ -9,11 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
-
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-
-import java.util.Base64;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -52,20 +49,9 @@ public class SecurityServiceImpl
 	@Override
 	public Optional<String> authenticate() {
 
-		String mess = "message";
-		String costam = base64Encoder.encode(aesCryptor.encrypt(mess.getBytes(CHARSET)));
-		System.out.println(costam);
-		byte[] decodedBytes = Base64.getDecoder().decode(costam);
-		decodedBytes = aesCryptor.decrypt(decodedBytes);
-		System.out.println(new String(decodedBytes));
-		//		Optional<List<Role>> maybeRoles = this.DB.getRolesById(2);
-//		List<Role> roleList = maybeRoles.orElse(new ArrayList<>());
-//		SessionToken token = new SessionToken(roleList);
-//		aesCryptor.encrypt(token.getToken().getBytes(StandardCharsets.UTF_8));
-//		(new String(aesCryptor.decrypt(.getBytes(StandardCharsets.UTF_8))));
 		return Optional.of("XD");
-
 	}
+
 
 
 }
