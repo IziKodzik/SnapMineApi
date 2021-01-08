@@ -2,6 +2,7 @@ package com.snapmine.SnapMineApi.api;
 
 
 import com.snapmine.SnapMineApi.model.Client;
+import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import com.snapmine.SnapMineApi.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -16,7 +17,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/security")
 public class SecurityController {
 
-    final
+    final private
     SecurityService securityService;
 
     public SecurityController(SecurityService securityService) {
@@ -31,5 +32,10 @@ public class SecurityController {
     @GetMapping("/auth")
     public ResponseEntity<?> authenticate() {
         return ResponseEntity.ok(this.securityService.authenticate());
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request){
+        return ResponseEntity.ok(this.securityService.login(request));
     }
 }

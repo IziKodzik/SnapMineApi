@@ -3,6 +3,7 @@ package com.snapmine.SnapMineApi.dao;
 import com.snapmine.SnapMineApi.model.Client;
 import com.snapmine.SnapMineApi.model.Role;
 import com.snapmine.SnapMineApi.model.SQLMapper;
+import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -55,6 +56,13 @@ public class ClientDataAccessServicePostgres
     @Override
     public Optional<List<Client>> selectAllClients() {
         return Optional.ofNullable(this.query("SELECT * FROM client", Client.getMapper()));
+    }
+
+    @Override
+    public Optional<List<Client>> getClientByLoginRequest(LoginRequest request) {
+        String query = String.format("SELECT * FROM client WHERE name='%s' AND password='%s';",
+                request.getName(),request.getPassword());
+        return Optional.ofNullable(this.query(query,Client.getMapper()));
     }
 
     @Override
