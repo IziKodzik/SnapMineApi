@@ -7,5 +7,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface Secured {
 
-	Integer ttl = null;
+	String[] roles() default {"no"};
+
 }

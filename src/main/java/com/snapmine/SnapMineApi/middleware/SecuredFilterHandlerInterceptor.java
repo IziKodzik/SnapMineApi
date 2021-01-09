@@ -10,6 +10,7 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.Enumeration;
 
 @Component
@@ -36,7 +37,8 @@ public class SecuredFilterHandlerInterceptor
 					response.getWriter().write("{ \"message\" : \"Api requires a token.\"}");
 					return false;
 				}
-
+				String[] requiredRoles = filter.roles();
+				this.securityService.
 				System.out.println(hashedToken);
 			}
 		}

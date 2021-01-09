@@ -36,7 +36,8 @@ public class ClientController {
 		return this.clientService.addClient(client) >= 0 ?
 				ResponseEntity.ok().body("Account created.") : ResponseEntity.badRequest().body("nah :(");
 	}
-	@Secured
+
+	@Secured(roles={"admin"})
 	@GetMapping("/all")
 	public ResponseEntity<?> selectAllClients(){
 		return ResponseEntity.ok(this.clientService.selectAllClients());
