@@ -4,17 +4,17 @@ import com.google.gson.Gson;
 import com.snapmine.SnapMineApi.cryptor.AESCryptor;
 import com.snapmine.SnapMineApi.dao.ClientDao;
 import com.snapmine.SnapMineApi.dao.ClientDataAccessServicePostgres;
+import com.snapmine.SnapMineApi.model.dtos.request.AuthRequest;
 import com.snapmine.SnapMineApi.model.Client;
+import com.snapmine.SnapMineApi.model.Role;
 import com.snapmine.SnapMineApi.model.SessionToken;
 import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -49,17 +49,30 @@ public class SecurityServiceImpl
 	@Override
 	public Optional<String> login( LoginRequest request) {
 
-		int id = this.DB.getClientByLoginRequest(request).get().get(0).getId();
-		SessionToken token =
-				new SessionToken(this.DB.getRolesById(id).get());
+		Optional<List<Client>> maybeClient = this.DB.getClientByLoginRequest(request);
+		if(!maybeClient.isPresent() || maybeClient.get().size() != 1)
+			return Optional.of("Error: Password or login is incorrect.");
+
+		int id =  maybeClient.get().get(0).getId();
+		Optional<List<Role>> roles = this.DB.getRolesById(id);
+		if(!roles.isPresent() || roles.get().size() <= 0)
+			return Optional.of("Error: You can not log in due to database problem.");
+		SessionToken token = new SessionToken(roles.get());
+		System.out.println(gson.toJson(token));
 		return Optional.of(aesCryptor.encrypt(gson.toJson(token)));
+
 	}
 
 	@Override
-	public Optional<String> authenticate() {
+	public Optional<String> authenticate(AuthRequest hashedToken) {
 
-		SessionToken token = new SessionToken(this.DB.getRolesById(2).orElse(new ArrayList<>()));
-		return Optional.of(aesCryptor.encrypt(gson.toJson(token)));
+		return this.authenticate(gson.fromJson
+				(this.aesCryptor.decrypt(hashedToken.getHashedToken())
+						,SessionToken.class));
+	}
+
+	public Optional<String> authenticate(SessionToken token){
+		return Optional.of(gson.toJson(token).replace("/",""));
 	}
 
 
