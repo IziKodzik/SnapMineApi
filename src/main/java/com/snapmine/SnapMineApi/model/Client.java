@@ -14,6 +14,7 @@ public class Client{
 	private String password;
 	private String name;
 	private	String email;
+	private String tokenID;
 
 
 	public Client(@JsonProperty("id") int id,
@@ -66,6 +67,14 @@ public class Client{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getTokenID() {
+		return tokenID;
+	}
+
+	public void setTokenID(String tokenID) {
+		this.tokenID = tokenID;
 	}
 
 	@Override

@@ -1,12 +1,15 @@
 package com.snapmine.SnapMineApi.dao;
 
+import com.google.gson.Gson;
 import com.snapmine.SnapMineApi.model.Client;
 import com.snapmine.SnapMineApi.model.Role;
 import com.snapmine.SnapMineApi.model.SQLMapper;
+import com.snapmine.SnapMineApi.model.SessionToken;
 import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import com.google.gson.Gson;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ import java.util.function.Function;
 public class ClientDataAccessServicePostgres
     implements ClientDao{
 
+    Gson gSon = new Gson();
     private final String connectionString,
             password,
             user;
@@ -74,6 +78,15 @@ public class ClientDataAccessServicePostgres
     public int reset() {
         this.query("DELETE FROM client WHERE 1=1;",null);
         return 0;
+    }
+
+    @Override
+    public Optional<SessionToken> addToken(SessionToken token) {
+        System.out.println(token.getExpirationTime());
+        this.query(String.format("INSERT INTO sessionToken VALUES('%s','%s','%s')"
+                ,token.getId(),token.getRefreshCode(),token.getExpirationTime()),null);
+
+        return null;
     }
 
     private <T> List<T> query(String query, SQLMapper<T> mapper){

@@ -59,6 +59,7 @@ public class SecurityServiceImpl
 			return Optional.of("Error: You can not log in due to database problem.");
 		SessionToken token = new SessionToken(roles.get());
 		System.out.println(gson.toJson(token));
+		this.DB.addToken(token);
 		return Optional.of(aesCryptor.encrypt(gson.toJson(token)));
 
 	}
