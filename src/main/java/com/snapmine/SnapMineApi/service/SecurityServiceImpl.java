@@ -72,7 +72,7 @@ public class SecurityServiceImpl
 	}
 
 	public Optional<String> authenticate(SessionToken token){
-		return Optional.of(gson.toJson(token).replace("/",""));
+		return Optional.of(gson.toJson(token));
 	}
 
 
