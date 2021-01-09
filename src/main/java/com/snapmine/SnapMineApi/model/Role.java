@@ -1,8 +1,11 @@
 package com.snapmine.SnapMineApi.model;
 
+import com.google.gson.annotations.Expose;
+
 public class Role {
 
     private int id;
+    @Expose
     private String name,
                     value;
 

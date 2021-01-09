@@ -1,6 +1,7 @@
 package com.snapmine.SnapMineApi.model;
 
 
+import com.google.gson.annotations.Expose;
 import org.joda.time.DateTime;
 
 import java.sql.Timestamp;
@@ -10,14 +11,18 @@ import java.util.UUID;
 
 public class SessionToken {
 
+    @Expose
     private String id;
+    @Expose
     private List<Role> roles;
+    @Expose
     private Timestamp expirationDay;
     private String refreshCode;
 
     public SessionToken(String id) {
         this.id = id;
     }
+
     public SessionToken(List<Role> roles){
         this.expirationDay = new Timestamp(DateTime.now().plusHours(1).getMillis());
         this.refreshCode= UUID.randomUUID().toString().replace("-","");

@@ -1,6 +1,7 @@
 package com.snapmine.SnapMineApi.service;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.snapmine.SnapMineApi.cryptor.AESCryptor;
 import com.snapmine.SnapMineApi.dao.ClientDao;
 import com.snapmine.SnapMineApi.dao.ClientDataAccessServicePostgres;
@@ -28,10 +29,9 @@ public class SecurityServiceImpl
 	private Charset CHARSET = StandardCharsets.UTF_8; // ISO-8859-1 vs. UTF-8
 	@Autowired
 	public SecurityServiceImpl(ClientDataAccessServicePostgres db,
-							   AESCryptor aesCryptor, Function<String,String> secret,
-							   Gson gson) {
+							   AESCryptor aesCryptor, Function<String,String> secret) {
 		DB = db;
-		this.gson = gson;
+		this.gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		this.aesCryptor = aesCryptor;
 		this.aesCryptor.setKey((secret.apply("tokenHash")));
 	}
@@ -58,7 +58,6 @@ public class SecurityServiceImpl
 		if(!roles.isPresent() || roles.get().size() <= 0)
 			return Optional.of("Error: You can not log in due to database problem.");
 		SessionToken token = new SessionToken(roles.get());
-		System.out.println(gson.toJson(token));
 		this.DB.addToken(token);
 		return Optional.of(aesCryptor.encrypt(gson.toJson(token)));
 

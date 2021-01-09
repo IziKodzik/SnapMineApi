@@ -17,6 +17,7 @@ public class SecuredFilterHandlerInterceptor
 
 	final SecurityService securityService;
 
+	@Autowired
 	public SecuredFilterHandlerInterceptor(SecurityService securityService) {
 		this.securityService = securityService;
 	}
@@ -26,8 +27,7 @@ public class SecuredFilterHandlerInterceptor
 		if(handler instanceof HandlerMethod){
 			Secured filter = ((HandlerMethod)(handler)).getMethod().getAnnotation(Secured.class);
 			if( filter != null){
-//				int id = Integer.parseInt(request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1) );
-//				System.out.println(id);
+				request.getHeaderNames()
 			}
 		}
 		return true;
