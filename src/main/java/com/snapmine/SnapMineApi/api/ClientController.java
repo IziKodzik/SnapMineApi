@@ -2,18 +2,13 @@ package com.snapmine.SnapMineApi.api;
 
 
 import com.snapmine.SnapMineApi.annotation.Secured;
-import com.snapmine.SnapMineApi.model.Client;
+import com.snapmine.SnapMineApi.model.entity.Client;
 import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import com.snapmine.SnapMineApi.service.ClientService;
 import com.snapmine.SnapMineApi.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.List;
 
 @RequestMapping("/client")
 @RestController

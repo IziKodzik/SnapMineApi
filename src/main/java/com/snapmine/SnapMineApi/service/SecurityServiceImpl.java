@@ -6,9 +6,10 @@ import com.snapmine.SnapMineApi.cryptor.AESCryptor;
 import com.snapmine.SnapMineApi.dao.ClientDao;
 import com.snapmine.SnapMineApi.dao.ClientDataAccessServicePostgres;
 import com.snapmine.SnapMineApi.model.dtos.request.AuthRequest;
-import com.snapmine.SnapMineApi.model.Client;
-import com.snapmine.SnapMineApi.model.Role;
-import com.snapmine.SnapMineApi.model.SessionToken;
+import com.snapmine.SnapMineApi.model.dtos.response.AuthResponse;
+import com.snapmine.SnapMineApi.model.entity.Client;
+import com.snapmine.SnapMineApi.model.entity.Role;
+import com.snapmine.SnapMineApi.model.entity.SessionToken;
 import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,15 +67,35 @@ public class SecurityServiceImpl
 	}
 
 	@Override
-	public Optional<String> authenticate(AuthRequest hashedToken) {
+	public AuthResponse authenticate(AuthRequest hashedToken) {
 
-		return this.authenticate(gson.fromJson
-				(this.aesCryptor.decrypt(hashedToken.getHashedToken())
-						,SessionToken.class));
+		return null;
 	}
 
-	public Optional<String> authenticate(SessionToken token){
-		return Optional.of(gson.toJson(token));
+	@Override
+	public AuthResponse validateToken(String hashedToken) {
+		return this.validateToken(this.parseHashedToken(hashedToken));
+	}
+
+	@Override
+	public AuthResponse validateToken(SessionToken token) {
+
+		System.out.println(token.isUpToDate());
+		System.out.println(token.getExpirationTime());
+
+		this.DB.getTokenByHash(token.getId());
+
+		return null;
+
+	}
+
+	private SessionToken parseHashedToken(String hashedToken){
+		return (gson.fromJson(this.aesCryptor.decrypt(hashedToken),
+				SessionToken.class));
+	}
+
+	public AuthResponse authenticate(SessionToken token){
+		return null;
 	}
 
 

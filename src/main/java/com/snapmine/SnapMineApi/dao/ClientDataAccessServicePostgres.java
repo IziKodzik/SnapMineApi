@@ -1,15 +1,14 @@
 package com.snapmine.SnapMineApi.dao;
 
 import com.google.gson.Gson;
-import com.snapmine.SnapMineApi.model.Client;
-import com.snapmine.SnapMineApi.model.Role;
-import com.snapmine.SnapMineApi.model.SQLMapper;
-import com.snapmine.SnapMineApi.model.SessionToken;
+import com.snapmine.SnapMineApi.model.entity.Client;
+import com.snapmine.SnapMineApi.model.entity.Role;
+import com.snapmine.SnapMineApi.model.entity.SQLMapper;
+import com.snapmine.SnapMineApi.model.entity.SessionToken;
 import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import com.google.gson.Gson;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -112,4 +111,11 @@ public class ClientDataAccessServicePostgres
         return (result);
     }
 
+    @Override
+    public Optional<List<SessionToken>> getTokenByHash(String id) {
+        String query = String.format("SELECT * FROM sessionToken WHERE hash='%s';",id);
+        Optional<List<SessionToken>> result =
+                Optional.ofNullable(this.query(query,SessionToken.getMapper()));
+        return result;
+    }
 }

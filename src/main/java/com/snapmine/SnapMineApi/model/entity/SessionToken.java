@@ -1,6 +1,7 @@
-package com.snapmine.SnapMineApi.model;
+package com.snapmine.SnapMineApi.model.entity;
 
 
+import ch.qos.logback.core.subst.Token;
 import com.google.gson.annotations.Expose;
 import org.joda.time.DateTime;
 
@@ -19,20 +20,33 @@ public class SessionToken {
     private Timestamp expirationDay;
     private String refreshCode;
 
-    public SessionToken(String id) {
+    public SessionToken(){}
+
+    public SessionToken(String hash){
+        this.id = hash;
+    }
+
+    public SessionToken(String id,List<Role> roles) {
         this.id = id;
+        this.roles = roles;
     }
 
     public SessionToken(List<Role> roles){
         this.expirationDay = new Timestamp(DateTime.now().plusHours(1).getMillis());
         this.refreshCode= UUID.randomUUID().toString().replace("-","");
         this.id = UUID.randomUUID().toString().replace("-","");
-        this.roles = roles;
+
     }
     public SessionToken(Role... roles){
         this(Arrays.asList(roles));
     }
 
+    public boolean isUpToDate(){
+
+        System.out.println(expirationDay + "   <---");
+        System.out.println(DateTime.now() );
+        return new DateTime(expirationDay).isAfter(DateTime.now());
+    }
 
     public String getId() {
         return id;
@@ -64,5 +78,9 @@ public class SessionToken {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public static SQLMapper<SessionToken> getMapper(){
+        return resultSet -> new SessionToken(resultSet.getString("hash"));
     }
 }

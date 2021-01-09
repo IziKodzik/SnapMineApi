@@ -1,12 +1,6 @@
-package com.snapmine.SnapMineApi.model;
+package com.snapmine.SnapMineApi.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.function.Function;
 
 public class Client{
 

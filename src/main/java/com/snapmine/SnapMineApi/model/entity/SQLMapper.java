@@ -1,4 +1,4 @@
-package com.snapmine.SnapMineApi.model;
+package com.snapmine.SnapMineApi.model.entity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,6 +1,6 @@
 package com.snapmine.SnapMineApi.service;
 
-import com.snapmine.SnapMineApi.model.Client;
+import com.snapmine.SnapMineApi.model.entity.Client;
 import java.util.List;
 import java.util.Optional;
 

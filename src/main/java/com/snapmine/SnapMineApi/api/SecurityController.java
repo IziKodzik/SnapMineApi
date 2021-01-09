@@ -1,16 +1,11 @@
 package com.snapmine.SnapMineApi.api;
 
 
-import com.snapmine.SnapMineApi.model.Client;
 import com.snapmine.SnapMineApi.model.dtos.request.AuthRequest;
 import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import com.snapmine.SnapMineApi.service.SecurityService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 

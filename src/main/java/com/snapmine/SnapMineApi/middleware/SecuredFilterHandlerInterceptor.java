@@ -38,8 +38,7 @@ public class SecuredFilterHandlerInterceptor
 					return false;
 				}
 				String[] requiredRoles = filter.roles();
-				this.securityService.
-				System.out.println(hashedToken);
+				this.securityService.validateToken(hashedToken);
 			}
 		}
 		return true;

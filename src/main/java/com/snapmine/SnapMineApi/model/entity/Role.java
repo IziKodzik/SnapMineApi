@@ -1,4 +1,4 @@
-package com.snapmine.SnapMineApi.model;
+package com.snapmine.SnapMineApi.model.entity;
 
 import com.google.gson.annotations.Expose;
 
