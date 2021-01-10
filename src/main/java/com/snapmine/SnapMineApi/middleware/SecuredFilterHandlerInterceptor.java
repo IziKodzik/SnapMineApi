@@ -1,6 +1,8 @@
 package com.snapmine.SnapMineApi.middleware;
 
+import com.google.gson.Gson;
 import com.snapmine.SnapMineApi.annotation.Secured;
+import com.snapmine.SnapMineApi.model.dtos.response.AuthResponse;
 import com.snapmine.SnapMineApi.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ public class SecuredFilterHandlerInterceptor
  implements HandlerInterceptor {
 
 	final SecurityService securityService;
+	Gson gson = new Gson();
 
 	@Autowired
 	public SecuredFilterHandlerInterceptor(SecurityService securityService) {
@@ -30,15 +33,24 @@ public class SecuredFilterHandlerInterceptor
 			Secured filter = ((HandlerMethod)(handler)).getMethod().getAnnotation(Secured.class);
 			if( filter != null){
 				String hashedToken = request.getHeader("token");
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
 				if(hashedToken==null) {
 					response.setStatus(400);
-					response.setContentType("application/json");
-					response.setCharacterEncoding("UTF-8");
 					response.getWriter().write("{ \"message\" : \"Api requires a token.\"}");
 					return false;
 				}
 				String[] requiredRoles = filter.roles();
-				this.securityService.validateToken(hashedToken);
+				AuthResponse authResponse = ((this.securityService.validateToken(hashedToken)));
+				if(authResponse.getCode() != 200){
+					response.setStatus(authResponse.getCode());
+					response.getWriter().write(gson.toJson(authResponse));
+					return false;
+				}
+				//juano
+			//JAIF9UVS-5ruxoCdY-ivvqU-Fcj0Iz-a1QbtuLCSmzNGt8RT7TyRWugCpIiylwHY
+				//najman
+//				auwYr7dLinFQWQQZGG-_EfT93SsScy3aKgfMi6OVHNRSGqjKIJcrimJVdVaoPJkiQX3NqyVxhpHYQwUhlKfpB
 			}
 		}
 		return true;

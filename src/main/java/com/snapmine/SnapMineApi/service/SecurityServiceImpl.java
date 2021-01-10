@@ -7,6 +7,7 @@ import com.snapmine.SnapMineApi.dao.ClientDao;
 import com.snapmine.SnapMineApi.dao.ClientDataAccessServicePostgres;
 import com.snapmine.SnapMineApi.model.dtos.request.AuthRequest;
 import com.snapmine.SnapMineApi.model.dtos.response.AuthResponse;
+import com.snapmine.SnapMineApi.model.dtos.response.LoginResponse;
 import com.snapmine.SnapMineApi.model.entity.Client;
 import com.snapmine.SnapMineApi.model.entity.Role;
 import com.snapmine.SnapMineApi.model.entity.SessionToken;
@@ -50,20 +51,19 @@ public class SecurityServiceImpl
 
 
 	@Override
-	public Optional<String> login( LoginRequest request) {
+	public LoginResponse login(LoginRequest request) {
 
 		Optional<List<Client>> maybeClient = this.DB.getClientByLoginRequest(request);
 		if(!maybeClient.isPresent() || maybeClient.get().size() != 1)
-			return Optional.of("Error: Password or login is incorrect.");
+			return new LoginResponse(403,"Error: Password or login is incorrect.");
 
 		int id =  maybeClient.get().get(0).getId();
 		Optional<List<Role>> roles = this.DB.getRolesById(id);
 		if(!roles.isPresent() || roles.get().size() <= 0)
-			return Optional.of("Error: You can not log in due to database problem.");
+			return new LoginResponse(500,"Error: You can not log in due to database problem.");
 		SessionToken token = new SessionToken(roles.get());
-		System.out.println(token.getRoles());
 		this.DB.addToken(token);
-		return Optional.of(aesCryptor.encrypt(gson.toJson(token)));
+		return new LoginResponse(200,"Success: Token returned.");
 
 	}
 
@@ -79,27 +79,20 @@ public class SecurityServiceImpl
 		String decodedTokenString = this.aesCryptor.decrypt(hashedToken);
 		SessionToken token = gson.fromJson(decodedTokenString,SessionToken.class);
 		if(!token.isUpToDate())
-			return null;
+			return new AuthResponse(403,"Token is expired.");
 
-		System.out.println("UP TO DATE");
 		Optional<List<SessionToken>> maybeToken
 				= this.DB.getTokenByHash(token.getId());
 		if(!maybeToken.isPresent() || maybeToken.get().size() != 1)
-			return null;
-
-		System.out.println(decodedTokenString);
-
-		return null;
+			return new AuthResponse(403,"Token does not exist.");
+		return new AuthResponse(200,"Token is valid.");
 
 	}
 
 	@Override
 	public AuthResponse validateToken(SessionToken token) {
 
-
-
 		return null;
-
 	}
 
 	public AuthResponse authenticate(SessionToken token){
