@@ -22,22 +22,40 @@ public class AESCryptor
     }
 
 
-    public String encrypt(String text){
+    public String encrypt(String text,Key key){
         return Base64
                 .getEncoder()
                 .encodeToString
-                        (this.encrypt(text.getBytes(StandardCharsets.UTF_8)))
+                        (this.encrypt(text.getBytes(StandardCharsets.UTF_8),key))
                 .replace("/","-")
                 .replace("+","_");
     }
-
-    public String decrypt(String text){
+    public String decrypt(String text, Key key){
         return new String
                 (this.decrypt(Base64.getDecoder()
-                .decode(text
-                        .replace("-","/")
-                        .replace("_","+"))
-        ));
+                        .decode(text
+                                .replace("-","/")
+                                .replace("_","+")),key
+                ));
+    }
+
+    public String decrypt(String text,String key){
+        Key aesKey = new SecretKeySpec(key.getBytes(),"AES");
+        return this.decrypt(text,aesKey);
+    }
+
+    public String encrypt(String text,String key){
+        Key aesKey = new SecretKeySpec(key.getBytes(),"AES");
+        return this.encrypt(text,aesKey);
+
+    }
+
+    public String encrypt(String text){
+       return  this.encrypt(text,this.aesKey);
+    }
+
+    public String decrypt(String text){
+        return this.encrypt(text,this.aesKey);
     }
     @Override
     public byte[] decrypt(byte[] text) {
