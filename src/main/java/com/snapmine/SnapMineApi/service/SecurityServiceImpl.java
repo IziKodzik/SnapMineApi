@@ -57,6 +57,7 @@ public class SecurityServiceImpl
 		if(!maybeClient.isPresent() || maybeClient.get().size() != 1)
 			return new LoginResponse(403,"Error: Password or login is incorrect.");
 
+		System.out.println(this.aesCryptor.encrypt(request.toString()));
 		int id =  maybeClient.get().get(0).getId();
 		Optional<List<Role>> roles = this.DB.getRolesById(id);
 		if(!roles.isPresent() || roles.get().size() <= 0)

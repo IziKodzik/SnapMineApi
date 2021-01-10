@@ -21,18 +21,6 @@ public class AESCryptor
     public AESCryptor() throws NoSuchPaddingException, NoSuchAlgorithmException {
     }
 
-    @Override
-    public byte[] encrypt(byte[] text) {
-        try {
-            cipher.init(Cipher.ENCRYPT_MODE, aesKey);
-            return cipher.doFinal(text);
-
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
 
     public String encrypt(String text){
         return Base64
@@ -42,6 +30,7 @@ public class AESCryptor
                 .replace("/","-")
                 .replace("+","_");
     }
+
     public String decrypt(String text){
         return new String
                 (this.decrypt(Base64.getDecoder()
@@ -50,11 +39,15 @@ public class AESCryptor
                         .replace("_","+"))
         ));
     }
-
     @Override
     public byte[] decrypt(byte[] text) {
+        return this.decrypt(text,this.aesKey);
+    }
+
+    @Override
+    public byte[] decrypt(byte[] text, Key key) {
         try {
-            cipher.init(Cipher.DECRYPT_MODE, aesKey);
+            cipher.init(Cipher.DECRYPT_MODE, key);
             return cipher.doFinal(text);
         }catch (Exception e){
             e.printStackTrace();
@@ -63,13 +56,20 @@ public class AESCryptor
     }
 
     @Override
-    public byte[] encrypt(byte[] bytes, String key) {
-        return new byte[0];
+    public byte[] encrypt(byte[] text) {
+        return this.encrypt(text,this.aesKey);
     }
 
     @Override
-    public byte[] decrypt(byte[] bytes, String key) {
-        return new byte[0];
+    public byte[] encrypt(byte[] text, Key key) {
+        try {
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+            return cipher.doFinal(text);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void setKey(String key){
