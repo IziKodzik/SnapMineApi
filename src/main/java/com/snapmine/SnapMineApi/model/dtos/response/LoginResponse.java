@@ -1,14 +1,24 @@
 package com.snapmine.SnapMineApi.model.dtos.response;
 
+import com.google.gson.annotations.Expose;
+
 public class LoginResponse
     extends Response{
 
+    @Expose
     private String id;
-    private String others;
+    @Expose
+    private String roles;
+    @Expose
+    private String expirationDate;
+
 
     public LoginResponse(int code, String message) {
         super(code, message);
     }
+
+
+
 
     public String getId() {
         return id;
@@ -19,10 +29,22 @@ public class LoginResponse
     }
 
     public String getOthers() {
-        return others;
+        return roles;
     }
 
-    public void setOthers(String others) {
-        this.others = others;
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
+    public String getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
     }
 }

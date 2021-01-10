@@ -8,6 +8,7 @@ import com.snapmine.SnapMineApi.dao.ClientDataAccessServicePostgres;
 import com.snapmine.SnapMineApi.model.dtos.request.AuthRequest;
 import com.snapmine.SnapMineApi.model.dtos.response.AuthResponse;
 import com.snapmine.SnapMineApi.model.dtos.response.LoginResponse;
+import com.snapmine.SnapMineApi.model.dtos.response.Response;
 import com.snapmine.SnapMineApi.model.entity.Client;
 import com.snapmine.SnapMineApi.model.entity.Role;
 import com.snapmine.SnapMineApi.model.entity.SessionToken;
@@ -41,9 +42,9 @@ public class SecurityServiceImpl
 
 	public String test(String text){
 		byte[] en = this.aesCryptor.encrypt(text.getBytes(StandardCharsets.UTF_8));
-		System.out.println(new String(en));
+
 		byte[] de = this.aesCryptor.decrypt(en);
-		System.out.println(new String(de));
+
 		return new String(de);
 
 	}
@@ -51,13 +52,12 @@ public class SecurityServiceImpl
 
 
 	@Override
-	public LoginResponse login(LoginRequest request) {
+	public Response login(LoginRequest request) {
 
 		Optional<List<Client>> maybeClient = this.DB.getClientByLoginRequest(request);
 		if(!maybeClient.isPresent() || maybeClient.get().size() != 1)
 			return new LoginResponse(403,"Error: Password or login is incorrect.");
 
-		System.out.println(this.aesCryptor.encrypt(request.toString()));
 		int id =  maybeClient.get().get(0).getId();
 		Optional<List<Role>> roles = this.DB.getRolesById(id);
 		if(!roles.isPresent() || roles.get().size() <= 0)
@@ -65,10 +65,8 @@ public class SecurityServiceImpl
 		SessionToken token = new SessionToken(roles.get());
 		this.DB.addToken(token);
 		LoginResponse response = new LoginResponse(200,"Success: Token returned.");
-		response.setId(token.getId());
-		response.setOthers
-				("{" + gson.toJson(token.getRoles())+"," + gson.toJson(token.getExpirationTime()) + "}");
-		return response;
+
+		return new Response(200,"XD");
 
 	}
 
