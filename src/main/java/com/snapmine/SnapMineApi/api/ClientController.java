@@ -2,6 +2,7 @@ package com.snapmine.SnapMineApi.api;
 
 
 import com.snapmine.SnapMineApi.annotation.Secured;
+import com.snapmine.SnapMineApi.model.dtos.response.Response;
 import com.snapmine.SnapMineApi.model.entity.Client;
 import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import com.snapmine.SnapMineApi.service.ClientService;
@@ -51,10 +52,8 @@ public class ClientController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
-		String token = this.securityService.login(loginRequest).orElse(null);
-		return  token != null ? ResponseEntity.ok(token) :
-				ResponseEntity.badRequest()
-						.body("Login or password incorrect.");
+		Response response = this.securityService.login(loginRequest);
+		return ResponseEntity.status(response.getCode()).body(response);
 	}
 	@Secured
 	@GetMapping("/reset")

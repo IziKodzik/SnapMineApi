@@ -63,7 +63,11 @@ public class SecurityServiceImpl
 			return new LoginResponse(500,"Error: You can not log in due to database problem.");
 		SessionToken token = new SessionToken(roles.get());
 		this.DB.addToken(token);
-		return new LoginResponse(200,"Success: Token returned.");
+		LoginResponse response = new LoginResponse(200,"Success: Token returned.");
+		response.setId(token.getId());
+		response.setOthers
+				("{" + gson.toJson(token.getRoles())+"," + gson.toJson(token.getExpirationTime()) + "}");
+		return response;
 
 	}
 

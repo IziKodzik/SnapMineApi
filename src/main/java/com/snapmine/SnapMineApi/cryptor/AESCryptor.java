@@ -33,6 +33,7 @@ public class AESCryptor
         }
     }
 
+
     public String encrypt(String text){
         return Base64
                 .getEncoder()
@@ -61,6 +62,15 @@ public class AESCryptor
         }
     }
 
+    @Override
+    public byte[] encrypt(byte[] bytes, String key) {
+        return new byte[0];
+    }
+
+    @Override
+    public byte[] decrypt(byte[] bytes, String key) {
+        return new byte[0];
+    }
 
     public void setKey(String key){
         this.aesKey  = new SecretKeySpec(key.getBytes(), "AES");
