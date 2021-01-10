@@ -2,11 +2,13 @@ package com.snapmine.SnapMineApi.model.entity;
 
 
 import ch.qos.logback.core.subst.Token;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import org.joda.time.DateTime;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,12 +28,24 @@ public class SessionToken {
         this.id = hash;
     }
 
-    public SessionToken(String id,List<Role> roles) {
+    public SessionToken(@JsonProperty String id,
+                        @JsonProperty List<Role> roles,
+                        @JsonProperty Timestamp expirationDay,
+                        @JsonProperty String refreshCode) {
+        this.id = id;
+        this.roles = roles;
+        this.expirationDay = expirationDay;
+        this.refreshCode = refreshCode;
+    }
+
+    public SessionToken(String id, List<Role> roles) {
         this.id = id;
         this.roles = roles;
     }
 
     public SessionToken(List<Role> roles){
+        Collections.shuffle(roles);
+        this.roles =roles;
         this.expirationDay = new Timestamp(DateTime.now().plusHours(1).getMillis());
         this.refreshCode= UUID.randomUUID().toString().replace("-","");
         this.id = UUID.randomUUID().toString().replace("-","");
@@ -43,8 +57,7 @@ public class SessionToken {
 
     public boolean isUpToDate(){
 
-        System.out.println(expirationDay + "   <---");
-        System.out.println(DateTime.now() );
+
         return new DateTime(expirationDay).isAfter(DateTime.now());
     }
 

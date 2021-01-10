@@ -61,6 +61,7 @@ public class SecurityServiceImpl
 		if(!roles.isPresent() || roles.get().size() <= 0)
 			return Optional.of("Error: You can not log in due to database problem.");
 		SessionToken token = new SessionToken(roles.get());
+		System.out.println(token.getRoles());
 		this.DB.addToken(token);
 		return Optional.of(aesCryptor.encrypt(gson.toJson(token)));
 
@@ -74,24 +75,31 @@ public class SecurityServiceImpl
 
 	@Override
 	public AuthResponse validateToken(String hashedToken) {
-		return this.validateToken(this.parseHashedToken(hashedToken));
-	}
 
-	@Override
-	public AuthResponse validateToken(SessionToken token) {
+		String decodedTokenString = this.aesCryptor.decrypt(hashedToken);
+		SessionToken token = gson.fromJson(decodedTokenString,SessionToken.class);
+		if(!token.isUpToDate())
+			return null;
 
-		System.out.println(token.isUpToDate());
-		System.out.println(token.getExpirationTime());
+		System.out.println("UP TO DATE");
+		Optional<List<SessionToken>> maybeToken
+				= this.DB.getTokenByHash(token.getId());
+		if(!maybeToken.isPresent() || maybeToken.get().size() != 1)
+			return null;
 
-		this.DB.getTokenByHash(token.getId());
+		System.out.println(decodedTokenString);
 
 		return null;
 
 	}
 
-	private SessionToken parseHashedToken(String hashedToken){
-		return (gson.fromJson(this.aesCryptor.decrypt(hashedToken),
-				SessionToken.class));
+	@Override
+	public AuthResponse validateToken(SessionToken token) {
+
+
+
+		return null;
+
 	}
 
 	public AuthResponse authenticate(SessionToken token){
