@@ -55,21 +55,22 @@ public class SecurityServiceImpl
 	public Response login(LoginRequest request) {
 
 		Optional<List<Client>> maybeClient = this.DB.getClientByLoginRequest(request);
-		if(!maybeClient.isPresent() || maybeClient.get().size() != 1)
-			return new LoginResponse(403,"Error: Password or login is incorrect.");
+		if (!maybeClient.isPresent() || maybeClient.get().size() != 1)
+			return new LoginResponse(403, "Error: Password or login is incorrect.");
 
-		int id =  maybeClient.get().get(0).getId();
+		int id = maybeClient.get().get(0).getId();
 		Optional<List<Role>> roles = this.DB.getRolesById(id);
-		if(!roles.isPresent() || roles.get().size() <= 0)
-			return new LoginResponse(500,"Error: You can not log in due to database problem.");
+		if (!roles.isPresent() || roles.get().size() <= 0)
+			return new LoginResponse(500, "Error: You can not log in due to database problem.");
 		SessionToken token = new SessionToken(roles.get());
-		this.DB.addToken(token);
-		LoginResponse response = new LoginResponse(200,"Success: Token returned.");
+		String hash = this.aesCryptor.encrypt(gson.toJson(token));
+		this.DB.addToken(hash);
+		LoginResponse response = new LoginResponse(200, "Success: Token returned.");
+		response.setToken(hash);
 
-		return new Response(200,"XD");
 
+		return response;
 	}
-
 	@Override
 	public AuthResponse authenticate(AuthRequest hashedToken) {
 

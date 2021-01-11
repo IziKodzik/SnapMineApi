@@ -80,13 +80,12 @@ public class ClientDataAccessServicePostgres
     }
 
     @Override
-    public Optional<SessionToken> addToken(SessionToken token) {
-        System.out.println(token.getExpirationTime());
-        this.query(String.format("INSERT INTO sessionToken VALUES('%s','%s','%s')"
-                ,token.getId(),token.getRefreshCode(),token.getExpirationTime()),null);
-
+    public Optional<SessionToken> addToken(String hash) {
+        String query = String.format("INSERT INTO SessionToken VALUES('%s')",hash);
+        this.query(query,null);
         return null;
     }
+
 
     private <T> List<T> query(String query, SQLMapper<T> mapper){
         List<T> result = new ArrayList<>();

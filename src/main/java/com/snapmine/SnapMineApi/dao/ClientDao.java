@@ -17,7 +17,7 @@ public interface ClientDao {
 	Optional<List<Role>> getRolesById(int id);
 	Optional<List<Role>> getRolesByClient(Client client);
 	Optional<List<Client>> getClientByLoginRequest(LoginRequest request);
-	Optional<SessionToken> addToken(SessionToken token);
+	Optional<SessionToken> addToken(String token);
 	int reset();
 
 	Optional<List<SessionToken>> getTokenByHash(String id);
