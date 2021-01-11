@@ -41,16 +41,16 @@ public class SecuredFilterHandlerInterceptor
 					return false;
 				}
 				String[] requiredRoles = filter.roles();
-				AuthResponse authResponse = ((this.securityService.validateToken(hashedToken)));
+				AuthResponse authResponse =
+						((this.securityService.validateToken(hashedToken,requiredRoles)));
 				if(authResponse.getCode() != 200){
 					response.setStatus(authResponse.getCode());
 					response.getWriter().write(gson.toJson(authResponse));
 					return false;
 				}
-				//juano
-			//JAIF9UVS-5ruxoCdY-ivvqU-Fcj0Iz-a1QbtuLCSmzNGt8RT7TyRWugCpIiylwHY
-				//najman
-//				auwYr7dLinFQWQQZGG-_EfT93SsScy3aKgfMi6OVHNRSGqjKIJcrimJVdVaoPJkiQX3NqyVxhpHYQwUhlKfpB
+
+
+
 			}
 		}
 		return true;

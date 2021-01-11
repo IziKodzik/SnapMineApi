@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -78,8 +79,7 @@ public class SecurityServiceImpl
 	}
 
 	@Override
-	public AuthResponse validateToken(String hashedToken) {
-
+	public AuthResponse validateToken(String hashedToken,String[] roles) {
 
 		String decodedTokenString = this.aesCryptor.decrypt(hashedToken);
 		SessionToken token = gson.fromJson(decodedTokenString,SessionToken.class);
@@ -91,7 +91,20 @@ public class SecurityServiceImpl
 		if(!maybeToken.isPresent() || maybeToken.get().size() != 1)
 			return new AuthResponse(403,"Token does not exist.");
 
+		System.out.println(isAuthorized(token.getRoles(),roles));
+
+
 		return new AuthResponse(200,"Token is valid.");
+
+	}
+
+
+	public boolean isAuthorized(List<Role> clientRoles,String[] roleNames){
+
+		return
+				clientRoles.stream()
+						.anyMatch(r -> Arrays.asList(roleNames)
+								.contains(r.getName()));
 
 	}
 

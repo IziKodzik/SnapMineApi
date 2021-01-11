@@ -13,7 +13,7 @@ public interface SecurityService {
 	AuthResponse authenticate(SessionToken token);
 	Response login(LoginRequest request);
 	String test(String text);
-	AuthResponse validateToken(String hashedToken);
+	AuthResponse validateToken(String hashedToken,String[] roles);
 	AuthResponse validateToken(SessionToken token);
 
 }
