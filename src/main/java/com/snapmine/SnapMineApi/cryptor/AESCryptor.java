@@ -55,7 +55,7 @@ public class AESCryptor
     }
 
     public String decrypt(String text){
-        return this.encrypt(text,this.aesKey);
+        return this.decrypt(text,this.aesKey);
     }
     @Override
     public byte[] decrypt(byte[] text) {

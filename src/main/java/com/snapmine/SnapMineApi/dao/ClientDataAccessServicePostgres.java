@@ -111,8 +111,9 @@ public class ClientDataAccessServicePostgres
     }
 
     @Override
-    public Optional<List<SessionToken>> getTokenByHash(String id) {
-        String query = String.format("SELECT * FROM sessionToken WHERE hash='%s';",id);
+    public Optional<List<SessionToken>> getTokenByHash(String hash) {
+        System.out.println(hash);
+        String query = String.format("SELECT * FROM sessionToken WHERE hash='%s';",hash);
         Optional<List<SessionToken>> result =
                 Optional.ofNullable(this.query(query,SessionToken.getMapper()));
         return result;

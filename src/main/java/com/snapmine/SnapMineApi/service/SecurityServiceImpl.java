@@ -80,15 +80,17 @@ public class SecurityServiceImpl
 	@Override
 	public AuthResponse validateToken(String hashedToken) {
 
+
 		String decodedTokenString = this.aesCryptor.decrypt(hashedToken);
 		SessionToken token = gson.fromJson(decodedTokenString,SessionToken.class);
 		if(!token.isUpToDate())
 			return new AuthResponse(403,"Token is expired.");
 
 		Optional<List<SessionToken>> maybeToken
-				= this.DB.getTokenByHash(token.getId());
+				= this.DB.getTokenByHash(hashedToken);
 		if(!maybeToken.isPresent() || maybeToken.get().size() != 1)
 			return new AuthResponse(403,"Token does not exist.");
+
 		return new AuthResponse(200,"Token is valid.");
 
 	}
