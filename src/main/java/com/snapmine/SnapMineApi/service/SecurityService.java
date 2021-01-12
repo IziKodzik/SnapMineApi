@@ -8,12 +8,4 @@ import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 
 public interface SecurityService {
 
-
-	AuthResponse authenticate(AuthRequest hashedToken);
-	AuthResponse authenticate(SessionToken token);
-	Response login(LoginRequest request);
-	String test(String text);
-	AuthResponse validateToken(String hashedToken,String[] roles);
-	AuthResponse validateToken(SessionToken token);
-
 }
