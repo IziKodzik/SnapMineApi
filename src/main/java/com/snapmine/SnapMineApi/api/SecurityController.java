@@ -1,6 +1,7 @@
 package com.snapmine.SnapMineApi.api;
 
 
+import com.snapmine.SnapMineApi.exception.ApiRequestException;
 import com.snapmine.SnapMineApi.model.dtos.request.AuthRequest;
 import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import com.snapmine.SnapMineApi.service.SecurityService;
@@ -36,4 +37,10 @@ public class SecurityController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
         return null;
     }
+
+    @GetMapping
+    public ResponseEntity<?> test() {
+        throw new ApiRequestException("TEST");
+    }
+
 }

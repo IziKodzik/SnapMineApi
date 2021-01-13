@@ -18,13 +18,11 @@ public class ClientController {
 	private final ClientService clientService;
 
 
-	private final SecurityService securityService;
 
 	@Autowired
-	public ClientController(ClientService clientService
-							,SecurityService securityService) {
+	public ClientController(ClientService clientService)
+							 {
 		this.clientService = clientService;
-		this.securityService = securityService;
 	}
 
 	@PostMapping("/add")
@@ -52,8 +50,7 @@ public class ClientController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
-		Response response = this.securityService.login(loginRequest);
-		return ResponseEntity.status(response.getCode()).body(response);
+		return null;
 	}
 	@Secured
 	@GetMapping("/reset")

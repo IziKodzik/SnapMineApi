@@ -1,6 +1,7 @@
 package com.snapmine.SnapMineApi.dao;
 
 import com.google.gson.Gson;
+import com.snapmine.SnapMineApi.exception.ApiRequestException;
 import com.snapmine.SnapMineApi.model.entity.Client;
 import com.snapmine.SnapMineApi.model.entity.Role;
 import com.snapmine.SnapMineApi.model.entity.SQLMapper;
@@ -86,6 +87,10 @@ public class ClientDataAccessServicePostgres
         return null;
     }
 
+    @Override
+    public void test(){
+        throw new ApiRequestException("CHUJ");
+    }
 
     private <T> List<T> query(String query, SQLMapper<T> mapper){
         List<T> result = new ArrayList<>();

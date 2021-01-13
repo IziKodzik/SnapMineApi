@@ -41,5 +41,9 @@ public class SecurityServiceImpl
 	}
 
 
+	@Override
+	public void test() {
+			DB.test();
 
+	}
 }

@@ -5,6 +5,7 @@ import com.snapmine.SnapMineApi.model.entity.Role;
 import com.snapmine.SnapMineApi.model.entity.SessionToken;
 import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,5 +21,7 @@ public interface ClientDao {
 	Optional<SessionToken> addToken(String token);
 	int reset();
 
-	Optional<List<SessionToken>> getTokenByHash(String id);
+    void test() ;
+
+    Optional<List<SessionToken>> getTokenByHash(String id);
 }
