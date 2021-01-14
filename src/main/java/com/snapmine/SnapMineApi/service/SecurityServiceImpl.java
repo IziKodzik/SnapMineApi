@@ -56,13 +56,11 @@ public class SecurityServiceImpl
 
 		List<Role> roles =
 				DB.getRolesById(client.get(0).getId());
-
-
 		SessionToken token = new SessionToken(client.get(0).getId(),
 				roles);
-
 		String hashedToken = aesCryptor.encrypt(gson.toJson(token));
 
+		System.out.println(DB.addToken(hashedToken));
 		return new LoginResponse("Success.",hashedToken);
 	}
 

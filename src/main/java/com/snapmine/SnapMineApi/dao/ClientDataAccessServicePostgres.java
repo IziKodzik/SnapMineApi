@@ -6,7 +6,6 @@ import com.snapmine.SnapMineApi.model.entity.Client;
 import com.snapmine.SnapMineApi.model.entity.Role;
 import com.snapmine.SnapMineApi.model.entity.SQLMapper;
 import com.snapmine.SnapMineApi.model.entity.SessionToken;
-import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -82,15 +81,15 @@ public class ClientDataAccessServicePostgres
     }
 
     @Override
-    public SessionToken addToken(String hash) {
+    public String addToken(String hash) {
         String query = String.format("INSERT INTO SessionToken VALUES('%s')",hash);
         this.query(query,null);
-        return null;
+        return this.getTokenByHash(hash).get(0).getId();
     }
 
     @Override
     public void test(){
-        throw new ApiRequestException("CHUJ");
+        throw new ApiRequestException();
     }
 
     private <T> List<T> query(String query, SQLMapper<T> mapper){
@@ -117,11 +116,10 @@ public class ClientDataAccessServicePostgres
     }
 
     @Override
-    public Optional<List<SessionToken>> getTokenByHash(String hash) {
+    public List<SessionToken> getTokenByHash(String hash) {
         System.out.println(hash);
         String query = String.format("SELECT * FROM sessionToken WHERE hash='%s';",hash);
-        Optional<List<SessionToken>> result =
-                Optional.ofNullable(this.query(query,SessionToken.getMapper()));
-        return result;
+        return (this.query(query,SessionToken.getMapper()));
+
     }
 }

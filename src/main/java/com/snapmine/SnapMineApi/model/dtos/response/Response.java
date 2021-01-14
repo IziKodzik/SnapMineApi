@@ -36,7 +36,7 @@ public class Response {
     @Override
     public String toString() {
         return "AuthResponse{" +
-                "code=" + status +
+                "status=" + status +
                 ", message='" + message + '\'' +
                 '}';
     }
