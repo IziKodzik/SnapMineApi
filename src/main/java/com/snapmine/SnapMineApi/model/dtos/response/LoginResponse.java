@@ -9,12 +9,15 @@ public class LoginResponse
 
     private String token;
 
+    public LoginResponse(String message){
+        super(message);
+    }
 
     public LoginResponse(int code, String message){
         super(code,message);
     }
-    public LoginResponse(int code, String message,String token) {
-        super(code, message);
+    public LoginResponse(String message,String token) {
+        super(message);
         this.token = token;
     }
 

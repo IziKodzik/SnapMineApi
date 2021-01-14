@@ -5,21 +5,24 @@ import com.google.gson.annotations.Expose;
 public class Response {
 
     @Expose
-    private int code;
+    private int status = 200;
     @Expose
     public String message;
 
     public Response(int code, String message) {
-        this.code = code;
+        this(message);
+        this.status = code;
+    }
+    public Response(String message){
         this.message = message;
     }
 
-    public int getCode() {
-        return code;
+    public int getStatus() {
+        return status;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getMessage() {
@@ -33,7 +36,7 @@ public class Response {
     @Override
     public String toString() {
         return "AuthResponse{" +
-                "code=" + code +
+                "code=" + status +
                 ", message='" + message + '\'' +
                 '}';
     }

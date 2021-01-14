@@ -48,12 +48,12 @@ public class ClientDataAccessServicePostgres
     }
 
 
-    public Optional<List<Role>> getRolesById(int id){
+    public List<Role> getRolesById(int id){
         String query =(String.format("SELECT * FROM role INNER JOIN clientRole ON roleID=id WHERE clientID = %d",
                 id));
-        return Optional.ofNullable(this.query(query,Role.getMapper()));
+        return (this.query(query,Role.getMapper()));
     }
-    public Optional<List<Role>> getRolesByClient(Client client){
+    public List<Role> getRolesByClient(Client client){
         return this.getRolesById(client.getId());
     }
 
@@ -64,10 +64,10 @@ public class ClientDataAccessServicePostgres
     }
 
     @Override
-    public Optional<List<Client>> getClientByNameAndPassword(String name, String password) {
+    public List<Client> getClientByNameAndPassword(String name, String password) {
         String query = String.format("SELECT * FROM client WHERE name='%s' AND password='%s';",
                 name,password);
-        return Optional.ofNullable(this.query(query,Client.getMapper()));
+        return (this.query(query,Client.getMapper()));
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ClientDataAccessServicePostgres
     }
 
     @Override
-    public Optional<SessionToken> addToken(String hash) {
+    public SessionToken addToken(String hash) {
         String query = String.format("INSERT INTO SessionToken VALUES('%s')",hash);
         this.query(query,null);
         return null;

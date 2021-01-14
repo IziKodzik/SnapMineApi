@@ -10,6 +10,5 @@ import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
 public interface SecurityService {
 
     public void test();
-
     LoginResponse login(LoginRequest request);
 }

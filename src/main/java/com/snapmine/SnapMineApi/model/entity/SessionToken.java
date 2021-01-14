@@ -20,6 +20,9 @@ public class SessionToken {
     private List<Role> roles;
     @Expose
     private Timestamp expirationDay;
+    @Expose
+    private int clientID;
+
     private String refreshCode;
 
     public SessionToken(){}
@@ -41,6 +44,10 @@ public class SessionToken {
     public SessionToken(String id, List<Role> roles) {
         this.id = id;
         this.roles = roles;
+    }
+    public SessionToken(int clientID,List<Role> roles){
+        this(roles);
+        this.clientID = clientID;
     }
 
     public SessionToken(List<Role> roles){
@@ -95,5 +102,21 @@ public class SessionToken {
 
     public static SQLMapper<SessionToken> getMapper(){
         return resultSet -> new SessionToken(resultSet.getString("hash"));
+    }
+
+    public Timestamp getExpirationDay() {
+        return expirationDay;
+    }
+
+    public void setExpirationDay(Timestamp expirationDay) {
+        this.expirationDay = expirationDay;
+    }
+
+    public int getClientID() {
+        return clientID;
+    }
+
+    public void setClientID(int clientID) {
+        this.clientID = clientID;
     }
 }

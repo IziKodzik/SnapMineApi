@@ -4,6 +4,7 @@ package com.snapmine.SnapMineApi.api;
 import com.snapmine.SnapMineApi.exception.ApiRequestException;
 import com.snapmine.SnapMineApi.model.dtos.request.AuthRequest;
 import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
+import com.snapmine.SnapMineApi.model.dtos.response.LoginResponse;
 import com.snapmine.SnapMineApi.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +36,8 @@ public class SecurityController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
-        securityService.login(request);
-        return null;
+        LoginResponse response = securityService.login(request);
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @GetMapping

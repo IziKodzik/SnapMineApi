@@ -49,13 +49,21 @@ public class SecurityServiceImpl
 	}
 	@Override
 	public LoginResponse login(LoginRequest request){
-		Optional<List<Client>> maybeClient =
+		List<Client> client =
 				DB.getClientByNameAndPassword(request.getName(),request.getPassword());
-		if(!(maybeClient.isPresent() && maybeClient.get().size() == 1))
+		if(client.size() != 1)
 			throw new ApiRequestException("Login or password is incorrect.",401);
 
+		List<Role> roles =
+				DB.getRolesById(client.get(0).getId());
 
-		return null;
+
+		SessionToken token = new SessionToken(client.get(0).getId(),
+				roles);
+
+		String hashedToken = aesCryptor.encrypt(gson.toJson(token));
+
+		return new LoginResponse("Success.",hashedToken);
 	}
 
 }
