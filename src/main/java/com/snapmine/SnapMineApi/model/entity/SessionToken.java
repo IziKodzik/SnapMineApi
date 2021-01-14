@@ -1,7 +1,6 @@
 package com.snapmine.SnapMineApi.model.entity;
 
 
-import ch.qos.logback.core.subst.Token;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import org.joda.time.DateTime;
@@ -19,7 +18,7 @@ public class SessionToken {
     @Expose
     private List<Role> roles;
     @Expose
-    private Timestamp expirationDay;
+    private Timestamp expirationTime;
     @Expose
     private int clientID;
 
@@ -33,11 +32,11 @@ public class SessionToken {
 
     public SessionToken(@JsonProperty String id,
                         @JsonProperty List<Role> roles,
-                        @JsonProperty Timestamp expirationDay,
+                        @JsonProperty Timestamp expirationTime,
                         @JsonProperty String refreshCode) {
         this.id = id;
         this.roles = roles;
-        this.expirationDay = expirationDay;
+        this.expirationTime = expirationTime;
         this.refreshCode = refreshCode;
     }
 
@@ -53,7 +52,7 @@ public class SessionToken {
     public SessionToken(List<Role> roles){
         Collections.shuffle(roles);
         this.roles =roles;
-        this.expirationDay = new Timestamp(DateTime.now().plusHours(1).getMillis());
+        this.expirationTime = new Timestamp(DateTime.now().plusHours(1).getMillis());
         this.refreshCode= UUID.randomUUID().toString().replace("-","");
         this.id = UUID.randomUUID().toString().replace("-","");
 
@@ -64,8 +63,7 @@ public class SessionToken {
 
     public boolean isUpToDate(){
 
-
-        return new DateTime(expirationDay).isAfter(DateTime.now());
+        return new DateTime(expirationTime).isAfterNow();
     }
 
     public String getId() {
@@ -77,11 +75,7 @@ public class SessionToken {
     }
 
     public Timestamp getExpirationTime() {
-        return expirationDay;
-    }
-
-    public void setExpirationTime(Timestamp expirationDay) {
-        this.expirationDay = expirationDay;
+        return expirationTime;
     }
 
     public String getRefreshCode() {
@@ -102,14 +96,6 @@ public class SessionToken {
 
     public static SQLMapper<SessionToken> getMapper(){
         return resultSet -> new SessionToken(resultSet.getString("hash"));
-    }
-
-    public Timestamp getExpirationDay() {
-        return expirationDay;
-    }
-
-    public void setExpirationDay(Timestamp expirationDay) {
-        this.expirationDay = expirationDay;
     }
 
     public int getClientID() {
