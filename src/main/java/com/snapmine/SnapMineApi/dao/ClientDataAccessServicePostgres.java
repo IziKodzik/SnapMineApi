@@ -57,15 +57,16 @@ public class ClientDataAccessServicePostgres
         return this.getRolesById(client.getId());
     }
 
+
     @Override
     public Optional<List<Client>> selectAllClients() {
         return Optional.ofNullable(this.query("SELECT * FROM client", Client.getMapper()));
     }
 
     @Override
-    public Optional<List<Client>> getClientByLoginRequest(LoginRequest request) {
+    public Optional<List<Client>> getClientByNameAndPassword(String name, String password) {
         String query = String.format("SELECT * FROM client WHERE name='%s' AND password='%s';",
-                request.getName(),request.getPassword());
+                name,password);
         return Optional.ofNullable(this.query(query,Client.getMapper()));
     }
 
@@ -110,7 +111,7 @@ public class ClientDataAccessServicePostgres
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            return null;
+            throw new ApiRequestException("Problems with database connection.",503);
         }
         return (result);
     }

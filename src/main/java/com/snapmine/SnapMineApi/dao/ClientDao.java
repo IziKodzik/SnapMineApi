@@ -14,10 +14,12 @@ public interface ClientDao {
 
 	int addClient(Client client);
 	Optional<List<Client>> selectAllClients();
+
+	Optional<List<Client>> getClientByNameAndPassword(String name, String password);
+
 	Optional<Client> getClient(int id);
 	Optional<List<Role>> getRolesById(int id);
 	Optional<List<Role>> getRolesByClient(Client client);
-	Optional<List<Client>> getClientByLoginRequest(LoginRequest request);
 	Optional<SessionToken> addToken(String token);
 	int reset();
 

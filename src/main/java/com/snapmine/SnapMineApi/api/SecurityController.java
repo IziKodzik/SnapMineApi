@@ -35,6 +35,7 @@ public class SecurityController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
+        securityService.login(request);
         return null;
     }
 

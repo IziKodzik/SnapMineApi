@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.snapmine.SnapMineApi.cryptor.AESCryptor;
 import com.snapmine.SnapMineApi.dao.ClientDao;
 import com.snapmine.SnapMineApi.dao.ClientDataAccessServicePostgres;
+import com.snapmine.SnapMineApi.exception.ApiRequestException;
 import com.snapmine.SnapMineApi.model.dtos.request.AuthRequest;
 import com.snapmine.SnapMineApi.model.dtos.response.AuthResponse;
 import com.snapmine.SnapMineApi.model.dtos.response.LoginResponse;
@@ -31,6 +32,7 @@ public class SecurityServiceImpl
 	private final ClientDao DB;
 	private AESCryptor aesCryptor;
 	private Charset CHARSET = StandardCharsets.UTF_8; // ISO-8859-1 vs. UTF-8
+
 	@Autowired
 	public SecurityServiceImpl(ClientDataAccessServicePostgres db,
 							   AESCryptor aesCryptor, Function<String,String> secret) {
@@ -44,6 +46,16 @@ public class SecurityServiceImpl
 	@Override
 	public void test() {
 			DB.test();
-
 	}
+	@Override
+	public LoginResponse login(LoginRequest request){
+		Optional<List<Client>> maybeClient =
+				DB.getClientByNameAndPassword(request.getName(),request.getPassword());
+		if(!(maybeClient.isPresent() && maybeClient.get().size() == 1))
+			throw new ApiRequestException("Login or password is incorrect.",401);
+
+
+		return null;
+	}
+
 }
