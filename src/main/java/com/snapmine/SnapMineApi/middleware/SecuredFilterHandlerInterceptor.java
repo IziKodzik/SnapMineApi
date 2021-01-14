@@ -2,6 +2,7 @@ package com.snapmine.SnapMineApi.middleware;
 
 import com.google.gson.Gson;
 import com.snapmine.SnapMineApi.annotation.Secured;
+import com.snapmine.SnapMineApi.exception.ApiRequestException;
 import com.snapmine.SnapMineApi.model.dtos.response.AuthResponse;
 import com.snapmine.SnapMineApi.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,17 +32,23 @@ public class SecuredFilterHandlerInterceptor
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		if(handler instanceof HandlerMethod){
 			Secured filter = ((HandlerMethod)(handler)).getMethod().getAnnotation(Secured.class);
-			if( filter != null){
-				String hashedToken = request.getHeader("token");
-				response.setContentType("application/json");
-				response.setCharacterEncoding("UTF-8");
-				if(hashedToken==null) {
-					response.setStatus(400);
-					response.getWriter().write("{ \"message\" : \"Api requires a token.\"}");
-					return false;
-				}
+			if( filter == null)
+				return true;
+//				String hashedToken = request.getHeader("token");
+//				response.setContentType("application/json");
+//				response.setCharacterEncoding("UTF-8");
+//				if(hashedToken==null) {
+//					response.setStatus(401);
+//					response.getWriter().write("{ \"message\" : \"Api requires a token.\"}");
+//					return false;
 
-			}
+			String hashedToken = request.getHeader("token");
+			if (hashedToken==null)
+				throw new ApiRequestException("This request requires a token.",401);
+
+			securityService.validateToken(hashedToken);
+
+
 		}
 		return true;
 	}

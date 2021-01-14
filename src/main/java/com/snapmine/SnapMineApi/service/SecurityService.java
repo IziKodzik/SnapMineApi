@@ -11,4 +11,6 @@ public interface SecurityService {
 
     public void test();
     LoginResponse login(LoginRequest request);
+    boolean validateToken(String hashedToken);
+    AuthResponse auth(AuthRequest request);
 }

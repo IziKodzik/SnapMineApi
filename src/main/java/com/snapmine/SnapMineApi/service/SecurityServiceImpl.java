@@ -47,6 +47,7 @@ public class SecurityServiceImpl
 	public void test() {
 			DB.test();
 	}
+
 	@Override
 	public LoginResponse login(LoginRequest request){
 		List<Client> client =
@@ -59,9 +60,24 @@ public class SecurityServiceImpl
 		SessionToken token = new SessionToken(client.get(0).getId(),
 				roles);
 		String hashedToken = aesCryptor.encrypt(gson.toJson(token));
-
-		System.out.println(DB.addToken(hashedToken));
+		DB.addToken(hashedToken);
 		return new LoginResponse("Success.",hashedToken);
 	}
 
+	@Override
+	public AuthResponse auth(AuthRequest request){
+		System.out.println(gson.toJson(request));
+		return new AuthResponse("S");
+	}
+
+	@Override
+	public boolean validateToken(String hashedToken) {
+		List<SessionToken> tokens = DB.getTokenByHash(hashedToken);
+		System.out.println(tokens);
+		if(tokens.size() != 1)
+			throw new ApiRequestException("Token does not exists.",401);
+		if(tokens.get(0).isUpToDate())
+			return true;
+		throw new ApiRequestException("Token is expired.",401);
+	}
 }

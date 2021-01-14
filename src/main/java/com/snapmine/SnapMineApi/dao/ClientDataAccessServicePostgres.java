@@ -117,7 +117,6 @@ public class ClientDataAccessServicePostgres
 
     @Override
     public List<SessionToken> getTokenByHash(String hash) {
-        System.out.println(hash);
         String query = String.format("SELECT * FROM sessionToken WHERE hash='%s';",hash);
         return (this.query(query,SessionToken.getMapper()));
 
