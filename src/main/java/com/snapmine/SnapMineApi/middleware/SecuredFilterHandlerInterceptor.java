@@ -6,6 +6,7 @@ import com.snapmine.SnapMineApi.exception.ApiRequestException;
 import com.snapmine.SnapMineApi.model.dtos.response.AuthResponse;
 import com.snapmine.SnapMineApi.model.entity.SessionToken;
 import com.snapmine.SnapMineApi.service.SecurityService;
+import com.snapmine.SnapMineApi.util.PathParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -51,16 +52,21 @@ public class SecuredFilterHandlerInterceptor
 
 			SessionToken token = securityService.validateToken(hashedToken);
 
+			String uri = request.getRequestURI();
+			int[] scope = PathParser.findNSlash(uri, filter.idPos());
+			System.out.println(uri);
+			System.out.println(Arrays.toString(scope));
+			System.out.println(uri.substring(scope[0]+1,scope[1]));
+//			if(token.getClientID() == id)
+//				return true;
+
 			boolean hasRoles =
 					(token.getRoles().stream().anyMatch(r -> (roles).contains(r.getName())));
 			if (hasRoles)
 				return true;
-			if(!roles.contains("selfPrivileged"))
+			if(filter.idPos() == -1)
 				throw new ApiRequestException("No authorization.",401);
 
-			int id = 1; //in future i have to do some url parsing to get required id
-			if(token.getClientID() == id)
-				return true;
 
 
 		}

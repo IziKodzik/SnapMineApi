@@ -42,7 +42,8 @@ public class ClientController {
 		return ResponseEntity.ok( "Hello to clients");
 	}
 
-	@Secured
+
+	@Secured(roles = {"admin"},idPos = 0)
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getClient(@PathVariable("id") int id){
 		return ResponseEntity.ok(id);
@@ -56,6 +57,11 @@ public class ClientController {
 	@GetMapping("/reset")
 	public int reset(){
 		return this.clientService.reset();
+	}
+	@Secured(roles = {"admin"},idPos = 2)
+	@GetMapping("/{id}/jd/dd")
+	public ResponseEntity<?> jdOrka(){
+		return ResponseEntity.ok("JD");
 	}
 
 
