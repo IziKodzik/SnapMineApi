@@ -7,6 +7,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface Secured {
 
+	int idPos() default -1;
 	String[] roles() default {"no"};
 
 }
