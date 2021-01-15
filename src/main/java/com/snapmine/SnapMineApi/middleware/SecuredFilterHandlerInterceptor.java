@@ -52,23 +52,19 @@ public class SecuredFilterHandlerInterceptor
 
 			SessionToken token = securityService.validateToken(hashedToken);
 
-			String uri = request.getRequestURI();
-			int[] scope = PathParser.findNSlash(uri, filter.idPos());
-			System.out.println(uri);
-			System.out.println(Arrays.toString(scope));
-			System.out.println(uri.substring(scope[0]+1,scope[1]));
-//			if(token.getClientID() == id)
-//				return true;
+			if(filter.idPos() != -1) {
+				String uri = request.getRequestURI();
+				int[] scope = PathParser.findNSlash(uri, filter.idPos());
+				int id = Integer.parseInt(uri.substring(scope[0] + 1, scope[1]));
+				if (token.getClientID() == id)
+					return true;
 
+			}
 			boolean hasRoles =
 					(token.getRoles().stream().anyMatch(r -> (roles).contains(r.getName())));
 			if (hasRoles)
 				return true;
-			if(filter.idPos() == -1)
-				throw new ApiRequestException("No authorization.",401);
-
-
-
+			throw new ApiRequestException("No authorization.",401);
 		}
 		return true;
 	}
