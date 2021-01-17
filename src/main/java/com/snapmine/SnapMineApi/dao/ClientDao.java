@@ -18,7 +18,7 @@ public interface ClientDao {
 	Optional<Client> getClient(int id);
 	List<Role> getRolesById(int id);
 	List<Role> getRolesByClient(Client client);
-	String addToken(String token);
+	String addToken(String token,String refreshToken);
 	int reset();
 
     void test() ;

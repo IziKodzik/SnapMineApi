@@ -81,8 +81,8 @@ public class ClientDataAccessServicePostgres
     }
 
     @Override
-    public String addToken(String hash) {
-        String query = String.format("INSERT INTO SessionToken VALUES('%s')",hash);
+    public String addToken(String hash,String refreshToken) {
+        String query = String.format("INSERT INTO SessionToken VALUES('%s','%s')",hash,refreshToken);
         this.query(query,null);
         return this.getTokenByHash(hash).get(0).getId();
     }

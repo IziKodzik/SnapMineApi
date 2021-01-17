@@ -1,24 +1,18 @@
 package com.snapmine.SnapMineApi.model.dtos.response;
-
-import com.google.gson.annotations.Expose;
-import com.snapmine.SnapMineApi.model.entity.SessionToken;
-import org.springframework.security.core.parameters.P;
-
 public class LoginResponse
     extends Response{
 
     private String token;
+    private String refreshToken;
 
-    public LoginResponse(String message){
-        super(message);
-    }
 
     public LoginResponse(int code, String message){
         super(code,message);
     }
-    public LoginResponse(String message,String token) {
+    public LoginResponse(String message,String token,String refreshToken) {
         super(message);
         this.token = token;
+        this.refreshToken = refreshToken;
     }
 
 
@@ -31,5 +25,11 @@ public class LoginResponse
         return token;
     }
 
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }

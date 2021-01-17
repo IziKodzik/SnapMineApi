@@ -40,8 +40,10 @@ public class SecurityController {
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(@RequestBody RefreshRequest request){
+        System.out.println(request.getToken());
         RefreshResponse response = securityService.refresh(request);
-        return ResponseEntity.status(response.getStatus()).body(response);
+//        return ResponseEntity.status(response.getStatus()).body(response);
+        return null;
     }
 
     @PostMapping("/login")

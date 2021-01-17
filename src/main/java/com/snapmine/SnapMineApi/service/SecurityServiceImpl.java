@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Service
@@ -59,8 +60,9 @@ public class SecurityServiceImpl
 		SessionToken token = new SessionToken(client.get(0).getId(),
 				roles);
 		String hashedToken = aesCryptor.encrypt(gson.toJson(token));
-		DB.addToken(hashedToken);
-		return new LoginResponse("Success.",hashedToken);
+		String refreshToken = UUID.randomUUID().toString().replace("-","");
+		DB.addToken(hashedToken,refreshToken);
+		return new LoginResponse("Success.",hashedToken,refreshToken);
 	}
 
 	@Override
@@ -71,6 +73,7 @@ public class SecurityServiceImpl
 
 	@Override
 	public RefreshResponse refresh(RefreshRequest request) {
+
 		return null;
 	}
 
