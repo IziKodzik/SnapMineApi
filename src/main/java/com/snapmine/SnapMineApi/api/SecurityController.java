@@ -4,6 +4,8 @@ package com.snapmine.SnapMineApi.api;
 import com.snapmine.SnapMineApi.exception.ApiRequestException;
 import com.snapmine.SnapMineApi.model.dtos.request.AuthRequest;
 import com.snapmine.SnapMineApi.model.dtos.request.LoginRequest;
+import com.snapmine.SnapMineApi.model.dtos.request.RefreshRequest;
+import com.snapmine.SnapMineApi.model.dtos.response.RefreshResponse;
 import com.snapmine.SnapMineApi.model.dtos.response.AuthResponse;
 import com.snapmine.SnapMineApi.model.dtos.response.LoginResponse;
 import com.snapmine.SnapMineApi.service.SecurityService;
@@ -34,6 +36,12 @@ public class SecurityController {
     public ResponseEntity<?> authenticate(@RequestBody AuthRequest request) {
         AuthResponse response = securityService.auth(request);
         return null;
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(@RequestBody RefreshRequest request){
+        RefreshResponse response = securityService.refresh(request);
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @PostMapping("/login")

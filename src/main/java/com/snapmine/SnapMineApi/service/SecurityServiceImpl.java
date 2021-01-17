@@ -7,6 +7,8 @@ import com.snapmine.SnapMineApi.dao.ClientDao;
 import com.snapmine.SnapMineApi.dao.ClientDataAccessServicePostgres;
 import com.snapmine.SnapMineApi.exception.ApiRequestException;
 import com.snapmine.SnapMineApi.model.dtos.request.AuthRequest;
+import com.snapmine.SnapMineApi.model.dtos.request.RefreshRequest;
+import com.snapmine.SnapMineApi.model.dtos.response.RefreshResponse;
 import com.snapmine.SnapMineApi.model.dtos.response.AuthResponse;
 import com.snapmine.SnapMineApi.model.dtos.response.LoginResponse;
 import com.snapmine.SnapMineApi.model.entity.Client;
@@ -65,6 +67,11 @@ public class SecurityServiceImpl
 	public AuthResponse auth(AuthRequest request){
 		System.out.println(gson.toJson(request));
 		return new AuthResponse("S");
+	}
+
+	@Override
+	public RefreshResponse refresh(RefreshRequest request) {
+		return null;
 	}
 
 	@Override
