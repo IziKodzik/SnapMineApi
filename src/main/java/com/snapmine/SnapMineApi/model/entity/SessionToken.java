@@ -49,6 +49,7 @@ public class SessionToken {
         this.clientID = clientID;
     }
 
+
     public SessionToken(List<Role> roles){
         Collections.shuffle(roles);
         this.roles =roles;

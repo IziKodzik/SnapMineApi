@@ -73,19 +73,29 @@ public class SecurityServiceImpl
 
 	@Override
 	public RefreshResponse refresh(RefreshRequest request) {
+		String hashedToken = request.getToken();
+		String refreshToken = request.getRefreshToken();
+		List<String> confirm = DB.noideaforname(hashedToken,refreshToken);
+		if(confirm.size() != 1)
+			throw new ApiRequestException("Token or refresh does not exist.",403);
+
+
 
 		return null;
 	}
 
 	@Override
 	public SessionToken validateToken(String hashedToken) {
-		List<SessionToken> tokens = DB.getTokenByHash(hashedToken);
-		if(tokens.size() != 1)
-			throw new ApiRequestException("Token does not exists.",401);
-
+		doesTokenExist(hashedToken);
 		SessionToken token = gson.fromJson(aesCryptor.decrypt(hashedToken),SessionToken.class);
 		if(token.isUpToDate())
 			return token;
 		throw new ApiRequestException("Token is expired.",401);
+	}
+
+	private void doesTokenExist(String hashedToken) {
+		List<SessionToken> tokens = DB.getTokenByHash(hashedToken);
+		if(tokens.size() != 1)
+			throw new ApiRequestException("Token does not exists.",401);
 	}
 }

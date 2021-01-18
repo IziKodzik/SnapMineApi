@@ -20,7 +20,7 @@ public interface ClientDao {
 	List<Role> getRolesByClient(Client client);
 	String addToken(String token,String refreshToken);
 	int reset();
-
+	List<String> noideaforname(String hash,String refreshToken);
     void test() ;
 
     List<SessionToken> getTokenByHash(String id);

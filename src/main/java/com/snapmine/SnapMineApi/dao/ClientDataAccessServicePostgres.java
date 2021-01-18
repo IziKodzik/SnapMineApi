@@ -116,6 +116,16 @@ public class ClientDataAccessServicePostgres
     }
 
     @Override
+    public List<String> noideaforname(String hash, String refreshToken) {
+        String query =
+                String.format("SELECT * FROM SessionToken WHERE hash='%s' AND refreshToken='%s'",
+                        hash,refreshToken);
+        return query(query,set-> "Ok");
+
+
+    }
+
+    @Override
     public List<SessionToken> getTokenByHash(String hash) {
         String query = String.format("SELECT * FROM sessionToken WHERE hash='%s';",hash);
         return (this.query(query,SessionToken.getMapper()));
