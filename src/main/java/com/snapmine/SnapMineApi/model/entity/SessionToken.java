@@ -106,4 +106,19 @@ public class SessionToken {
     public void setClientID(int clientID) {
         this.clientID = clientID;
     }
+
+    public void setExpirationTime(Timestamp expirationTime) {
+        this.expirationTime = expirationTime;
+    }
+
+    @Override
+    public String toString() {
+        return "SessionToken{" +
+                "id='" + id + '\'' +
+                ", roles=" + roles +
+                ", expirationTime=" + expirationTime +
+                ", clientID=" + clientID +
+                ", refreshCode='" + refreshCode + '\'' +
+                '}';
+    }
 }

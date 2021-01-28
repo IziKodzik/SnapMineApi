@@ -126,6 +126,12 @@ public class ClientDataAccessServicePostgres
     }
 
     @Override
+    public List<String> deleteTokenWithHash(String hashedToken) {
+        String query = String.format("DELETE FROM SessionToken WHERE hash='%s'",hashedToken);
+        return query(query,null);
+    }
+
+    @Override
     public List<SessionToken> getTokenByHash(String hash) {
         String query = String.format("SELECT * FROM sessionToken WHERE hash='%s';",hash);
         return (this.query(query,SessionToken.getMapper()));

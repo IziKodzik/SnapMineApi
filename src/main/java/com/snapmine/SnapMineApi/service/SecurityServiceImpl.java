@@ -8,7 +8,6 @@ import com.snapmine.SnapMineApi.dao.ClientDataAccessServicePostgres;
 import com.snapmine.SnapMineApi.exception.ApiRequestException;
 import com.snapmine.SnapMineApi.model.dtos.request.AuthRequest;
 import com.snapmine.SnapMineApi.model.dtos.request.RefreshRequest;
-import com.snapmine.SnapMineApi.model.dtos.response.RefreshResponse;
 import com.snapmine.SnapMineApi.model.dtos.response.AuthResponse;
 import com.snapmine.SnapMineApi.model.dtos.response.LoginResponse;
 import com.snapmine.SnapMineApi.model.entity.Client;
@@ -60,9 +59,14 @@ public class SecurityServiceImpl
 		SessionToken token = new SessionToken(client.get(0).getId(),
 				roles);
 		String hashedToken = aesCryptor.encrypt(gson.toJson(token));
-		String refreshToken = UUID.randomUUID().toString().replace("-","");
+		String refreshToken = createRefreshToken();
 		DB.addToken(hashedToken,refreshToken);
 		return new LoginResponse("Success.",hashedToken,refreshToken);
+	}
+
+	private String createRefreshToken() {
+		String refreshToken = UUID.randomUUID().toString().replace("-","");
+		return refreshToken;
 	}
 
 	@Override
@@ -72,16 +76,21 @@ public class SecurityServiceImpl
 	}
 
 	@Override
-	public RefreshResponse refresh(RefreshRequest request) {
+	public LoginResponse refresh(RefreshRequest request) {
 		String hashedToken = request.getToken();
 		String refreshToken = request.getRefreshToken();
 		List<String> confirm = DB.noideaforname(hashedToken,refreshToken);
 		if(confirm.size() != 1)
 			throw new ApiRequestException("Token or refresh does not exist.",403);
 
-
-
-		return null;
+		DB.deleteTokenWithHash(hashedToken);
+		SessionToken token = gson.fromJson(aesCryptor.decrypt(hashedToken),SessionToken.class);
+		System.out.println(token);
+		token = new SessionToken(token.getClientID(), token.getRoles());
+		refreshToken = createRefreshToken();
+		hashedToken = aesCryptor.encrypt(gson.toJson(token));
+		DB.addToken(hashedToken,refreshToken);
+		return new LoginResponse(hashedToken,refreshToken);
 	}
 
 	@Override

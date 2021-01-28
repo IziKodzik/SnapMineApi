@@ -1,7 +1,6 @@
 package com.snapmine.SnapMineApi.service;
 
 import com.snapmine.SnapMineApi.model.dtos.request.RefreshRequest;
-import com.snapmine.SnapMineApi.model.dtos.response.RefreshResponse;
 import com.snapmine.SnapMineApi.model.dtos.response.AuthResponse;
 import com.snapmine.SnapMineApi.model.dtos.response.LoginResponse;
 import com.snapmine.SnapMineApi.model.entity.SessionToken;
@@ -14,5 +13,5 @@ public interface SecurityService {
     LoginResponse login(LoginRequest request);
     SessionToken validateToken(String hashedToken);
     AuthResponse auth(AuthRequest request);
-    RefreshResponse refresh(RefreshRequest request);
+    LoginResponse refresh(RefreshRequest request);
 }

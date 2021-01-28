@@ -24,4 +24,6 @@ public interface ClientDao {
     void test() ;
 
     List<SessionToken> getTokenByHash(String id);
+
+    List<String> deleteTokenWithHash(String hashedToken);
 }

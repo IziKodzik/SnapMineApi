@@ -14,6 +14,11 @@ public class LoginResponse
         this.token = token;
         this.refreshToken = refreshToken;
     }
+    public LoginResponse(String token,String refreshToken){
+        super();
+        this.token = token;
+        this.refreshToken = refreshToken;
+    }
 
 
     public void setToken(String token) {

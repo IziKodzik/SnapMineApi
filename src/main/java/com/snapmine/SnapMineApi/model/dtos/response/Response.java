@@ -7,11 +7,14 @@ public class Response {
     @Expose
     private int status = 200;
     @Expose
-    public String message;
+    public String message = "Success.";
 
     public Response(int code, String message) {
         this(message);
         this.status = code;
+    }
+    public Response(){
+
     }
     public Response(String message){
         this.message = message;
