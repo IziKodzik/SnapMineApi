@@ -20,7 +20,7 @@ public class ClientController {
 
 
 	@Autowired
-	public ClientController(ClientService clientService)
+	pe.printStackTrace();ublic ClientController(ClientService clientService)
 							 {
 		this.clientService = clientService;
 	}

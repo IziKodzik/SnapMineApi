@@ -49,7 +49,7 @@ public class SecurityController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
         LoginResponse response = securityService.login(request);
-        return ResponseEntity.status(response.getStatus()).body(response);
+        return ResponseEntity.status(404).body(response);
     }
 
     @GetMapping

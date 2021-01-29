@@ -73,6 +73,16 @@ public class AESCryptor
         }
     }
 
+    public byte[] encryptWithKey(byte[] text,String key){
+        try {
+            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key.getBytes(),"AES"));
+            return cipher.doFinal(text);
+        } catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @Override
     public byte[] encrypt(byte[] text) {
         return this.encrypt(text,this.aesKey);

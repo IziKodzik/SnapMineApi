@@ -58,10 +58,25 @@ public class SecurityServiceImpl
 				DB.getRolesById(client.get(0).getId());
 		SessionToken token = new SessionToken(client.get(0).getId(),
 				roles);
-		String hashedToken = aesCryptor.encrypt(gson.toJson(token));
-		String refreshToken = createRefreshToken();
-		DB.addToken(hashedToken,refreshToken);
-		return new LoginResponse("Success.",hashedToken,refreshToken);
+
+		String id = token.getId();
+		String json = gson.toJson(token);
+
+		System.out.println(id);
+		System.out.println(json);
+		String afterID = json.substring(json.indexOf(id)+id.length()+2);
+		String firstCiphered = aesCryptor.encrypt(afterID,id);
+		System.out.println(afterID);
+		System.out.println(firstCiphered);
+
+
+
+
+		return null;
+//		String hashedToken = aesCryptor.encrypt(gson.toJson(token));
+//		String refreshToken = createRefreshToken();
+//		DB.addToken(hashedToken,refreshToken);
+//		return new LoginResponse("Success.",hashedToken,refreshToken);
 	}
 
 	private String createRefreshToken() {
